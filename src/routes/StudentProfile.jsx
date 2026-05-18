@@ -1,6 +1,7 @@
-import { useState } from "react";
+import { useState, useContext } from "react";
 import Footer from "../components/Footer";
 import { searchStudents } from "../api";
+import { AuthContext } from "../context/AuthContext";
 import { FaUserGraduate, FaSearch, FaIdBadge, FaBookOpen, FaCalendarAlt, FaPhone, FaEnvelope, FaTrophy, FaChartLine, FaUserPlus } from "react-icons/fa";
 
 const StudentProfile = () => {
@@ -10,6 +11,8 @@ const StudentProfile = () => {
   const [foundStudent, setFoundStudent] = useState(null);
   const [searched, setSearched] = useState(false);
   const [isSearching, setIsSearching] = useState(false);
+
+  const { isAdmin } = useContext(AuthContext);
 
   const handleSearch = async (e) => {
     e.preventDefault();
@@ -66,23 +69,25 @@ const StudentProfile = () => {
               <h2>Find Student</h2>
               <p>Enter student details to search</p>
             </div>
-            <a href="/add-student" style={{ 
-              backgroundColor: 'var(--brand)', 
-              color: 'white', 
-              padding: '0.8rem 1.5rem', 
-              borderRadius: '8px', 
-              textDecoration: 'none', 
-              display: 'flex', 
-              alignItems: 'center', 
-              gap: '0.5rem',
-              fontWeight: 'bold',
-              transition: 'background-color 0.3s'
-            }}
-            onMouseOver={(e) => e.currentTarget.style.backgroundColor = 'var(--text-color)'}
-            onMouseOut={(e) => e.currentTarget.style.backgroundColor = 'var(--brand)'}
-            >
-              <FaUserPlus /> Add New Student
-            </a>
+            {isAdmin && (
+              <a href="/add-student" style={{ 
+                backgroundColor: 'var(--brand)', 
+                color: 'white', 
+                padding: '0.8rem 1.5rem', 
+                borderRadius: '8px', 
+                textDecoration: 'none', 
+                display: 'flex', 
+                alignItems: 'center', 
+                gap: '0.5rem',
+                fontWeight: 'bold',
+                transition: 'background-color 0.3s'
+              }}
+              onMouseOver={(e) => e.currentTarget.style.backgroundColor = 'var(--text-color)'}
+              onMouseOut={(e) => e.currentTarget.style.backgroundColor = 'var(--brand)'}
+              >
+                <FaUserPlus /> Add New Student
+              </a>
+            )}
           </div>
 
           <form onSubmit={handleSearch} className="student-search-form">

@@ -1,13 +1,21 @@
-import React, { useState } from 'react';
+import React, { useState, useContext, useEffect } from 'react';
 import { useForm } from 'react-hook-form';
 import { useNavigate, Link } from 'react-router-dom';
+import { AuthContext } from '../context/AuthContext';
 import { addStudent } from '../api';
 import Footer from '../components/Footer';
 import { FaUserPlus, FaArrowLeft, FaCheckCircle, FaExclamationCircle } from 'react-icons/fa';
 
 const AddStudent = () => {
   const navigate = useNavigate();
+  const { isAdmin } = useContext(AuthContext);
   const [submitStatus, setSubmitStatus] = useState({ loading: false, error: null, success: false });
+
+  useEffect(() => {
+    if (!isAdmin) {
+      navigate('/admin-login');
+    }
+  }, [isAdmin, navigate]);
 
   const {
     register,

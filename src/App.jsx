@@ -27,19 +27,24 @@ const router = createBrowserRouter(
       <Route path="apply" element={<Admission />} />
       <Route path="student-profile" element={<StudentProfile />} />
       <Route path="add-student" element={<AddStudent />} />
+      <Route path="admin-login" element={<AdminLogin />} />
       <Route path="*" element={<Error />} />
     </Route>
   )
 );
 
 import { SiteProvider } from "./context/SiteContext";
+import { AuthProvider } from "./context/AuthContext";
 import AddStudent from "./routes/AddStudent";
+import AdminLogin from "./routes/AdminLogin";
 
 const App = () => {
   return ( 
-    <SiteProvider>
-      <RouterProvider router={router} />
-    </SiteProvider>
+    <AuthProvider>
+      <SiteProvider>
+        <RouterProvider router={router} />
+      </SiteProvider>
+    </AuthProvider>
   );
 }
  

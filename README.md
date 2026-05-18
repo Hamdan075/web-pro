@@ -1,16 +1,6 @@
-# React + Vite
+# School-Website
+Web application created with ReactJS
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+A front-end school website with home, about, facility, programs, contact and admission pages. "react-router-dom" was used for navigation through the pages. I also created a lot of reusable components since React JS is component-based. I also made use of react hooks like the useState hook, the useEffect hook, useForm hook, the useParams hook and the useLoaderData hook. The contact form also includes validation to ensure data accuracy
 
-Currently, two official plugins are available:
-
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Babel](https://babeljs.io/) (or [oxc](https://oxc.rs) when used in [rolldown-vite](https://vite.dev/guide/rolldown)) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
-
-## React Compiler
-
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
-
-## Expanding the ESLint configuration
-
-If you are developing a production application, we recommend using TypeScript with type-aware lint rules enabled. Check out the [TS template](https://github.com/vitejs/vite/tree/main/packages/create-vite/template-react-ts) for information on how to integrate TypeScript and [`typescript-eslint`](https://typescript-eslint.io) in your project.
+<img width="944" alt="school-web" src="https://github.com/Oludefiyinfoluwa06/School-Website/assets/120565527/1c3df68c-8b3e-4af3-ba79-849b7351a1d5">

@@ -4,7 +4,7 @@ import { useNavigate, Link } from 'react-router-dom';
 import { AuthContext } from '../context/AuthContext';
 import { addStudent } from '../api';
 import Footer from '../components/Footer';
-import { FaUserPlus, FaArrowLeft, FaCheckCircle, FaExclamationCircle } from 'react-icons/fa';
+import { FaUserPlus, FaArrowLeft, FaCheckCircle, FaExclamationCircle, FaChartLine, FaBookOpen } from 'react-icons/fa';
 
 const AddStudent = () => {
   const navigate = useNavigate();
@@ -29,12 +29,32 @@ const AddStudent = () => {
   const onSubmit = async (data) => {
     setSubmitStatus({ loading: true, error: null, success: false });
     
-    // Convert numeric fields
+    // Structure the grades map
+    const grades = {};
+    if (data.gradeEnglish) grades.English = data.gradeEnglish;
+    if (data.gradeMaths) grades.Mathematics = data.gradeMaths;
+    if (data.gradeScience) grades.Science = data.gradeScience;
+    if (data.gradeUrdu) grades.Urdu = data.gradeUrdu;
+    if (data.gradeIslamiat) grades.Islamiat = data.gradeIslamiat;
+    if (data.gradeComputer) grades['Computer Science'] = data.gradeComputer;
+
+    // Convert numeric fields and reconstruct achievements array
     const formattedData = {
       ...data,
       rollNo: parseInt(data.rollNo, 10),
       class: parseInt(data.class, 10),
+      attendance: data.attendance ? parseInt(data.attendance, 10) : 0,
+      achievements: data.achievements ? data.achievements.split(',').map(item => item.trim()).filter(Boolean) : [],
+      grades: grades
     };
+
+    // Clean up temporary form grade fields
+    delete formattedData.gradeEnglish;
+    delete formattedData.gradeMaths;
+    delete formattedData.gradeScience;
+    delete formattedData.gradeUrdu;
+    delete formattedData.gradeIslamiat;
+    delete formattedData.gradeComputer;
 
     try {
       await addStudent(formattedData);
@@ -153,7 +173,7 @@ const AddStudent = () => {
               <label>Gender *</label>
               <select 
                 {...register("gender", { required: "Gender is required" })}
-                style={{ padding: '0.8rem', borderRadius: '8px', border: errors.gender ? '1px solid red' : '1px solid #ddd', width: '100%', fontSize: '1rem' }}
+                style={{ padding: '12px 16px', borderRadius: '10px', border: errors.gender ? '2px solid red' : '2px solid #e1e5ea', width: '100%', fontSize: '15px', fontFamily: 'Poppins, sans-serif', background: '#f8f9fb' }}
               >
                 <option value="">Select Gender</option>
                 <option value="Male">Male</option>
@@ -202,6 +222,149 @@ const AddStudent = () => {
                 type="date"
                 {...register("admissionDate")}
               />
+            </div>
+
+            <div style={{ gridColumn: '1 / -1', borderBottom: '1px solid #e1e5ea', paddingBottom: '0.5rem', marginTop: '1.5rem', marginBottom: '0.5rem' }}>
+              <h3 style={{ margin: 0, color: 'var(--brand)', display: 'flex', alignItems: 'center', gap: '0.5rem', fontSize: '1.2rem' }}>
+                <FaChartLine /> Performance & Achievements
+              </h3>
+            </div>
+
+            <div className="search-field">
+              <label>Attendance (%)</label>
+              <input 
+                type="number" 
+                placeholder="e.g. 95"
+                {...register("attendance", { 
+                  min: { value: 0, message: "Attendance cannot be less than 0" },
+                  max: { value: 100, message: "Attendance cannot exceed 100" }
+                })}
+                style={{ borderColor: errors.attendance ? 'red' : '' }}
+              />
+              {errors.attendance && <span style={{ color: 'red', fontSize: '0.8rem' }}>{errors.attendance.message}</span>}
+            </div>
+
+            <div className="search-field">
+              <label>Achievements (comma-separated)</label>
+              <input 
+                type="text" 
+                placeholder="e.g. Sports Captain, Math Olympiad Winner"
+                {...register("achievements")}
+              />
+            </div>
+
+            <div style={{ gridColumn: '1 / -1', borderBottom: '1px solid #e1e5ea', paddingBottom: '0.5rem', marginTop: '1.5rem', marginBottom: '0.5rem' }}>
+              <h3 style={{ margin: 0, color: 'var(--brand)', display: 'flex', alignItems: 'center', gap: '0.5rem', fontSize: '1.2rem' }}>
+                <FaBookOpen /> Academic Grades
+              </h3>
+            </div>
+
+            <div className="search-field">
+              <label>English Grade</label>
+              <select 
+                {...register("gradeEnglish")}
+                style={{ padding: '12px 16px', borderRadius: '10px', border: '2px solid #e1e5ea', width: '100%', fontSize: '15px', fontFamily: 'Poppins, sans-serif', background: '#f8f9fb' }}
+              >
+                <option value="">Select Grade</option>
+                <option value="A+">A+</option>
+                <option value="A">A</option>
+                <option value="B+">B+</option>
+                <option value="B">B</option>
+                <option value="C">C</option>
+                <option value="D">D</option>
+                <option value="E">E</option>
+                <option value="F">F</option>
+              </select>
+            </div>
+
+            <div className="search-field">
+              <label>Mathematics Grade</label>
+              <select 
+                {...register("gradeMaths")}
+                style={{ padding: '12px 16px', borderRadius: '10px', border: '2px solid #e1e5ea', width: '100%', fontSize: '15px', fontFamily: 'Poppins, sans-serif', background: '#f8f9fb' }}
+              >
+                <option value="">Select Grade</option>
+                <option value="A+">A+</option>
+                <option value="A">A</option>
+                <option value="B+">B+</option>
+                <option value="B">B</option>
+                <option value="C">C</option>
+                <option value="D">D</option>
+                <option value="E">E</option>
+                <option value="F">F</option>
+              </select>
+            </div>
+
+            <div className="search-field">
+              <label>Science Grade</label>
+              <select 
+                {...register("gradeScience")}
+                style={{ padding: '12px 16px', borderRadius: '10px', border: '2px solid #e1e5ea', width: '100%', fontSize: '15px', fontFamily: 'Poppins, sans-serif', background: '#f8f9fb' }}
+              >
+                <option value="">Select Grade</option>
+                <option value="A+">A+</option>
+                <option value="A">A</option>
+                <option value="B+">B+</option>
+                <option value="B">B</option>
+                <option value="C">C</option>
+                <option value="D">D</option>
+                <option value="E">E</option>
+                <option value="F">F</option>
+              </select>
+            </div>
+
+            <div className="search-field">
+              <label>Urdu Grade</label>
+              <select 
+                {...register("gradeUrdu")}
+                style={{ padding: '12px 16px', borderRadius: '10px', border: '2px solid #e1e5ea', width: '100%', fontSize: '15px', fontFamily: 'Poppins, sans-serif', background: '#f8f9fb' }}
+              >
+                <option value="">Select Grade</option>
+                <option value="A+">A+</option>
+                <option value="A">A</option>
+                <option value="B+">B+</option>
+                <option value="B">B</option>
+                <option value="C">C</option>
+                <option value="D">D</option>
+                <option value="E">E</option>
+                <option value="F">F</option>
+              </select>
+            </div>
+
+            <div className="search-field">
+              <label>Islamiat Grade</label>
+              <select 
+                {...register("gradeIslamiat")}
+                style={{ padding: '12px 16px', borderRadius: '10px', border: '2px solid #e1e5ea', width: '100%', fontSize: '15px', fontFamily: 'Poppins, sans-serif', background: '#f8f9fb' }}
+              >
+                <option value="">Select Grade</option>
+                <option value="A+">A+</option>
+                <option value="A">A</option>
+                <option value="B+">B+</option>
+                <option value="B">B</option>
+                <option value="C">C</option>
+                <option value="D">D</option>
+                <option value="E">E</option>
+                <option value="F">F</option>
+              </select>
+            </div>
+
+            <div className="search-field">
+              <label>Computer Science Grade</label>
+              <select 
+                {...register("gradeComputer")}
+                style={{ padding: '12px 16px', borderRadius: '10px', border: '2px solid #e1e5ea', width: '100%', fontSize: '15px', fontFamily: 'Poppins, sans-serif', background: '#f8f9fb' }}
+              >
+                <option value="">Select Grade</option>
+                <option value="A+">A+</option>
+                <option value="A">A</option>
+                <option value="B+">B+</option>
+                <option value="B">B</option>
+                <option value="C">C</option>
+                <option value="D">D</option>
+                <option value="E">E</option>
+                <option value="F">F</option>
+              </select>
             </div>
 
             <div className="search-field" style={{ gridColumn: '1 / -1' }}>

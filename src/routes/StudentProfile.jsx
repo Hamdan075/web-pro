@@ -1,8 +1,26 @@
+
+
 import { useState, useContext } from "react";
+import { Link } from "react-router-dom";
 import Footer from "../components/Footer";
-import { searchStudents } from "../api";
+import { searchStudents, deleteStudent } from "../api";
 import { AuthContext } from "../context/AuthContext";
-import { FaUserGraduate, FaSearch, FaIdBadge, FaBookOpen, FaCalendarAlt, FaPhone, FaEnvelope, FaTrophy, FaChartLine, FaUserPlus } from "react-icons/fa";
+import { 
+  FaUserGraduate, 
+  FaSearch, 
+  FaIdBadge, 
+  FaBookOpen, 
+  FaCalendarAlt, 
+  FaPhone, 
+  FaEnvelope, 
+  FaTrophy, 
+  FaChartLine, 
+  FaUserPlus, 
+  FaEdit, 
+  FaTrashAlt, 
+  FaCheckCircle, 
+  FaExclamationCircle 
+} from "react-icons/fa";
 
 const StudentProfile = () => {
   const [searchName, setSearchName] = useState("");
@@ -11,6 +29,7 @@ const StudentProfile = () => {
   const [foundStudent, setFoundStudent] = useState(null);
   const [searched, setSearched] = useState(false);
   const [isSearching, setIsSearching] = useState(false);
+  const [deleteStatus, setDeleteStatus] = useState({ success: false, error: null });
 
   const { isAdmin } = useContext(AuthContext);
 
@@ -42,6 +61,29 @@ const StudentProfile = () => {
     setSearchClass("");
     setFoundStudent(null);
     setSearched(false);
+    setDeleteStatus({ success: false, error: null });
+  };
+
+  const handleDelete = async () => {
+    if (!foundStudent) return;
+    if (!window.confirm(`Are you sure you want to delete ${foundStudent.name}?`)) {
+      return;
+    }
+
+    try {
+      await deleteStudent(foundStudent._id);
+      setDeleteStatus({ success: true, error: null });
+      
+      // Clear found student and notification after delay
+      setTimeout(() => {
+        setFoundStudent(null);
+        setSearched(false);
+        setDeleteStatus({ success: false, error: null });
+      }, 3000);
+    } catch (err) {
+      console.error('Failed to delete student:', err);
+      setDeleteStatus({ success: false, error: err.message });
+    }
   };
 
   // Grades come from MongoDB as a Map-like object — normalize it
@@ -151,21 +193,77 @@ const StudentProfile = () => {
 
       {/* Results Section */}
       {searched && (
-        <section className="student-result-section">
-          {foundStudent ? (
+        <section className="student-result-section" style={{ display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
+          {deleteStatus.error && (
+            <div style={{ width: '100%', maxWidth: '850px', margin: '0 auto 1.5rem', backgroundColor: '#f8d7da', color: '#721c24', padding: '1rem', borderRadius: '8px', display: 'flex', alignItems: 'center', gap: '0.5rem', fontWeight: 500 }}>
+              <FaExclamationCircle /> {deleteStatus.error}
+            </div>
+          )}
+
+          {deleteStatus.success ? (
+            <div style={{ width: '100%', maxWidth: '850px', backgroundColor: '#d4edda', color: '#155724', padding: '2rem', borderRadius: '20px', display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', gap: '1rem', fontWeight: 500, fontSize: '1.2rem', boxShadow: '0 15px 50px rgba(0,0,0,0.08)' }}>
+              <FaCheckCircle style={{ fontSize: '3rem', color: '#28a745' }} />
+              <span>Student successfully deleted. Resetting search...</span>
+            </div>
+          ) : foundStudent ? (
             <div className="profile-card-container">
               {/* Profile Header */}
-              <div className="profile-header">
-                <div className="profile-avatar">
-                  <FaUserGraduate />
-                </div>
-                <div className="profile-header-info">
-                  <h1>{foundStudent.name}</h1>
-                  <div className="profile-badges">
-                    <span className="badge badge-class">Class {foundStudent.class}-{foundStudent.section}</span>
-                    <span className="badge badge-roll">Roll No: {foundStudent.rollNo}</span>
+              <div className="profile-header" style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', flexWrap: 'wrap', gap: '20px' }}>
+                <div style={{ display: 'flex', alignItems: 'center', gap: '25px', flexWrap: 'wrap' }}>
+                  <div className="profile-avatar">
+                    <FaUserGraduate />
+                  </div>
+                  <div className="profile-header-info">
+                    <h1>{foundStudent.name}</h1>
+                    <div className="profile-badges">
+                      <span className="badge badge-class">Class {foundStudent.class}-{foundStudent.section}</span>
+                      <span className="badge badge-roll">Roll No: {foundStudent.rollNo}</span>
+                    </div>
                   </div>
                 </div>
+
+                {isAdmin && (
+                  <div className="profile-actions" style={{ display: 'flex', gap: '10px' }}>
+                    <Link to={`/edit-student/${foundStudent._id}`} style={{ 
+                      padding: '0.6rem 1.2rem', 
+                      backgroundColor: 'rgba(255, 255, 255, 0.2)', 
+                      color: 'white',
+                      border: '1px solid rgba(255, 255, 255, 0.4)',
+                      borderRadius: '8px',
+                      textDecoration: 'none',
+                      display: 'flex',
+                      alignItems: 'center',
+                      gap: '0.5rem',
+                      fontWeight: 'bold',
+                      fontSize: '0.9rem',
+                      transition: 'background-color 0.3s'
+                    }}
+                    onMouseOver={(e) => e.currentTarget.style.backgroundColor = 'rgba(255, 255, 255, 0.3)'}
+                    onMouseOut={(e) => e.currentTarget.style.backgroundColor = 'rgba(255, 255, 255, 0.2)'}
+                    >
+                      <FaEdit /> Edit
+                    </Link>
+                    <button onClick={handleDelete} style={{ 
+                      padding: '0.6rem 1.2rem', 
+                      backgroundColor: '#dc2626', 
+                      color: 'white',
+                      border: 'none',
+                      borderRadius: '8px',
+                      cursor: 'pointer',
+                      display: 'flex',
+                      alignItems: 'center',
+                      gap: '0.5rem',
+                      fontWeight: 'bold',
+                      fontSize: '0.9rem',
+                      transition: 'background-color 0.3s'
+                    }}
+                    onMouseOver={(e) => e.currentTarget.style.backgroundColor = '#b91c1c'}
+                    onMouseOut={(e) => e.currentTarget.style.backgroundColor = '#dc2626'}
+                    >
+                      <FaTrashAlt /> Delete
+                    </button>
+                  </div>
+                )}
               </div>
 
               {/* Profile Body */}

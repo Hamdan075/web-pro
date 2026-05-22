@@ -67,3 +67,38 @@ export const submitAdmission = async (admissionData) => {
   }
   return response.json();
 };
+
+export const fetchStudent = async (id) => {
+  const response = await fetch(`${API_BASE}/students/${id}`);
+  if (!response.ok) {
+    const errorData = await response.json().catch(() => ({}));
+    throw new Error(errorData.error || `API error: ${response.statusText}`);
+  }
+  return response.json();
+};
+
+export const updateStudent = async (id, studentData) => {
+  const response = await fetch(`${API_BASE}/students/${id}`, {
+    method: 'PUT',
+    headers: {
+      'Content-Type': 'application/json',
+    },
+    body: JSON.stringify(studentData),
+  });
+  if (!response.ok) {
+    const errorData = await response.json().catch(() => ({}));
+    throw new Error(errorData.error || `API error: ${response.statusText}`);
+  }
+  return response.json();
+};
+
+export const deleteStudent = async (id) => {
+  const response = await fetch(`${API_BASE}/students/${id}`, {
+    method: 'DELETE',
+  });
+  if (!response.ok) {
+    const errorData = await response.json().catch(() => ({}));
+    throw new Error(errorData.error || `API error: ${response.statusText}`);
+  }
+  return response.json();
+};

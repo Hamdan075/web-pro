@@ -519,6 +519,91 @@ body {
   }
 }
 
+@media (max-width: 768px) {
+  .book-container {
+    width: 310px;
+    height: 440px;
+  }
+  
+  .cover-title {
+    font-size: 1.8rem;
+  }
+  
+  .cover-subtitle {
+    font-size: 0.85rem;
+  }
+  
+  .cover-badge {
+    margin-top: 35px;
+    padding: 5px 12px;
+  }
+  
+  .book-page {
+    padding: 25px 20px;
+  }
+  
+  .page-title {
+    font-size: 1.4rem;
+    margin-bottom: 12px;
+  }
+  
+  .page-text {
+    font-size: 0.9rem;
+    line-height: 1.5;
+  }
+  
+  .page-crest {
+    font-size: 1.8rem;
+    margin-bottom: 8px;
+  }
+}
+
+@media (max-width: 480px) {
+  .book-container {
+    width: 260px;
+    height: 360px;
+  }
+  
+  .cover-title {
+    font-size: 1.4rem;
+    letter-spacing: 2px;
+  }
+  
+  .cover-subtitle {
+    font-size: 0.75rem;
+  }
+  
+  .cover-badge {
+    margin-top: 20px;
+    padding: 4px 10px;
+    font-size: 0.65rem;
+  }
+  
+  .book-page {
+    padding: 20px 15px;
+  }
+  
+  .page-title {
+    font-size: 1.15rem;
+    margin-bottom: 10px;
+  }
+  
+  .page-text {
+    font-size: 0.78rem;
+    line-height: 1.4;
+  }
+  
+  .page-crest {
+    font-size: 1.5rem;
+    margin-bottom: 5px;
+  }
+  
+  .page-footer {
+    font-size: 0.6rem;
+    margin-top: 10px;
+  }
+}
+
 /* Cinematic Revealed Hero Section */
 .hero-reveal-container {
   position: absolute;

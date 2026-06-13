@@ -20,7 +20,10 @@ const iconMap = {
 };
 
 export const getIcon = (iconName) => {
-  return iconMap[iconName] || null;
+  if (typeof iconName === 'string') {
+    return iconMap[iconName] || null;
+  }
+  return iconName || null;
 };
 
 export default iconMap;

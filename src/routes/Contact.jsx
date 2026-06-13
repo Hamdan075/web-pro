@@ -1,7 +1,10 @@
 import React from 'react';
 import ContactUs from '../components/ContactUs';
+import ContactForm from '../components/ContactForm';
+import ContactAddress from '../components/ContactAddress';
 import Footer from '../components/Footer';
 import useScrollReveal from '../hooks/useScrollReveal';
+import '../components/Sections.css';
 
 const Contact = () => {
   const mapRef = useScrollReveal({ animation: 'reveal-scale' });

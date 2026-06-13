@@ -1,5 +1,8 @@
-
-
+import React, { useState, useEffect } from 'react';
+import { NavLink, useNavigate } from 'react-router-dom';
+import axios from 'axios';
+import { FaUserPlus, FaSearch, FaUserCircle, FaGraduationCap, FaMedal, FaClipboardList, FaSpinner, FaCheckCircle, FaExclamationCircle } from 'react-icons/fa';
+import './StudentProfile.css';
 import { useState, useContext } from "react";
 import { Link } from "react-router-dom";
 import Footer from "../components/Footer";

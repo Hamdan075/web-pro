@@ -1,8 +1,11 @@
-import BookHero from "../components/BookHero";
+import React from 'react';
+import BookHero from '../components/BookHero';
+import MissionVision from '../components/MissionVision';
+import WhySchool from '../components/WhySchool';
+import FacilityList from '../components/FacilityList';
+import Testimonials from '../components/Testimonials';
+import '../components/Sections.css';
 import Footer from "../components/Footer";
-import MissionVision from "../components/MissionVision";
-import Testimonials from "../components/Testimonials";
-import WhySchool from "../components/WhySchool";
 
 const Home = () => {
     return ( 

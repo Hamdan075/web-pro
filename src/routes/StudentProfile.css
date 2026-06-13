@@ -1,0 +1,674 @@
+/* ============================================
+   STUDENT PROFILE PAGE
+   ============================================ */
+
+/* Hero */
+.student-hero {
+  background: linear-gradient(to bottom, rgba(2, 5, 11, 0.8), rgba(6, 11, 24, 0.95)), url('./assets/image5.jpg') no-repeat center/cover;
+  border-bottom: 2px solid var(--gold);
+  position: relative;
+  overflow: hidden;
+}
+
+.student-hero::before {
+  content: '';
+  position: absolute;
+  top: -50%;
+  left: -50%;
+  width: 200%;
+  height: 200%;
+  background: radial-gradient(circle, rgba(255, 255, 255, 0.03) 0%, transparent 70%);
+  animation: heroShimmer 6s ease-in-out infinite;
+  pointer-events: none;
+}
+
+@keyframes heroShimmer {
+
+  0%,
+  100% {
+    transform: translate(0, 0);
+  }
+
+  50% {
+    transform: translate(3%, 3%);
+  }
+}
+
+.student-hero-icon {
+  font-size: 50px;
+  color: var(--gold-shiny);
+  margin-bottom: 15px;
+  animation: float 3s ease-in-out infinite;
+  filter: drop-shadow(0 0 10px rgba(212, 175, 55, 0.4));
+}
+
+@keyframes float {
+
+  0%,
+  100% {
+    transform: translateY(0);
+  }
+
+  50% {
+    transform: translateY(-8px);
+  }
+}
+
+.student-hero-sub {
+  font-family: var(--font-serif);
+  font-size: 16px;
+  color: var(--text-secondary);
+  margin-top: 8px;
+  letter-spacing: 1px;
+  font-style: italic;
+}
+
+/* Search Section */
+.student-search-section {
+  display: flex;
+  justify-content: center;
+  padding: 60px 20px;
+  background: transparent;
+}
+
+.student-search-card {
+  width: 100%;
+  max-width: 800px;
+  background: rgba(255, 255, 255, 0.02);
+  border: 1px solid var(--glass-border);
+  border-radius: 24px;
+  box-shadow: 0 15px 40px rgba(0, 0, 0, 0.3);
+  overflow: hidden;
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  animation: slideUp 0.6s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+@keyframes slideUp {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.search-card-header {
+  background: linear-gradient(135deg, rgba(6, 11, 24, 0.95), rgba(1, 24, 123, 0.2));
+  border-bottom: 1px solid var(--glass-border);
+  padding: 35px 40px;
+  color: var(--text-primary);
+}
+
+.search-header-icon {
+  font-size: 24px;
+  margin-bottom: 8px;
+  color: var(--gold-shiny);
+}
+
+.search-card-header h2 {
+  font-family: var(--font-display);
+  font-size: 22px;
+  margin-bottom: 5px;
+  letter-spacing: 1.5px;
+  color: var(--text-primary);
+}
+
+.search-card-header p {
+  color: var(--text-secondary);
+  font-size: 14px;
+}
+
+.student-search-form {
+  padding: 40px;
+}
+
+.search-fields {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 24px;
+  margin-bottom: 30px;
+}
+
+.search-field label {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 12px;
+  font-weight: 600;
+  color: var(--text-secondary);
+  margin-bottom: 10px;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+}
+
+.search-field input {
+  width: 100%;
+  padding: 12px 16px;
+  border: 1px solid var(--glass-border);
+  border-radius: 10px;
+  font-size: 15px;
+  transition: all 0.3s ease;
+  background: rgba(255, 255, 255, 0.03);
+  color: var(--text-primary);
+}
+
+.search-field input:focus {
+  outline: none;
+  border-color: var(--gold);
+  background: rgba(255, 255, 255, 0.06);
+  box-shadow: 0 0 10px rgba(212, 175, 55, 0.15);
+}
+
+.search-field input::placeholder {
+  color: rgba(255, 255, 255, 0.2);
+}
+
+.search-actions {
+  display: flex;
+  gap: 16px;
+}
+
+.search-btn {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  padding: 14px 24px;
+  background: linear-gradient(135deg, var(--brand-light), var(--brand));
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  color: #fff;
+  border-radius: 12px;
+  font-size: 15px;
+  font-weight: 700;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  box-shadow: 0 6px 20px rgba(1, 24, 123, 0.3);
+  text-transform: uppercase;
+  letter-spacing: 1px;
+}
+
+.search-btn:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 10px 30px rgba(1, 24, 123, 0.5);
+  border-color: var(--gold);
+}
+
+.search-btn:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+  transform: none;
+}
+
+.search-spinner {
+  width: 18px;
+  height: 18px;
+  border: 2px solid rgba(255, 255, 255, 0.3);
+  border-top-color: #fff;
+  border-radius: 50%;
+  animation: spin 0.6s linear infinite;
+}
+
+@keyframes spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+.spin {
+  animation: spin 1s linear infinite;
+}
+
+/* Admin form select/textarea styling (dark theme) */
+.student-search-form select {
+  padding: 12px 16px;
+  border-radius: 10px;
+  border: 1px solid var(--glass-border);
+  width: 100%;
+  font-size: 15px;
+  font-family: var(--font-sans);
+  background: rgba(255, 255, 255, 0.03);
+  color: var(--text-primary);
+  transition: all 0.3s ease;
+  outline: none;
+  cursor: pointer;
+}
+
+.student-search-form select:focus {
+  border-color: var(--gold);
+  background: rgba(255, 255, 255, 0.06);
+  box-shadow: 0 0 10px rgba(212, 175, 55, 0.15);
+}
+
+.student-search-form select option {
+  background-color: var(--bg-dark);
+  color: var(--text-primary);
+}
+
+.student-search-form textarea {
+  padding: 12px 16px;
+  border-radius: 10px;
+  border: 1px solid var(--glass-border);
+  width: 100%;
+  font-size: 15px;
+  font-family: var(--font-sans);
+  background: rgba(255, 255, 255, 0.03);
+  color: var(--text-primary);
+  transition: all 0.3s ease;
+  outline: none;
+  resize: vertical;
+}
+
+.student-search-form textarea:focus {
+  border-color: var(--gold);
+  background: rgba(255, 255, 255, 0.06);
+  box-shadow: 0 0 10px rgba(212, 175, 55, 0.15);
+}
+
+.student-search-form .form-section-divider {
+  grid-column: 1 / -1;
+  border-bottom: 1px solid var(--glass-border);
+  padding-bottom: 0.5rem;
+  margin-top: 1.5rem;
+  margin-bottom: 0.5rem;
+}
+
+.student-search-form .form-section-divider h3 {
+  margin: 0;
+  color: var(--gold-shiny);
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  font-size: 1.2rem;
+  font-family: var(--font-display);
+  letter-spacing: 1px;
+}
+
+/* Responsive: admin forms single column on mobile */
+@media (max-width: 768px) {
+
+  .student-search-form[style*="grid-template-columns"],
+  .student-search-form {
+    grid-template-columns: 1fr !important;
+  }
+}
+
+.reset-btn {
+  padding: 14px 28px;
+  background: transparent;
+  color: var(--text-secondary);
+  border: 1px solid var(--glass-border);
+  border-radius: 12px;
+  font-size: 15px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.reset-btn:hover {
+  border-color: var(--gold);
+  color: var(--text-primary);
+  background: rgba(255, 255, 255, 0.05);
+}
+
+/* Result Section */
+.student-result-section {
+  padding: 0 20px 80px;
+  background: transparent;
+  display: flex;
+  justify-content: center;
+  animation: slideUp 0.5s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+/* Profile Card */
+.profile-card-container {
+  width: 100%;
+  max-width: 850px;
+  background: rgba(255, 255, 255, 0.02);
+  border: 1px solid var(--glass-border);
+  border-radius: 24px;
+  box-shadow: 0 15px 40px rgba(0, 0, 0, 0.3);
+  overflow: hidden;
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+}
+
+.profile-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 40px;
+  background: linear-gradient(135deg, rgba(6, 11, 24, 0.95), rgba(1, 24, 123, 0.25));
+  border-bottom: 1px solid var(--glass-border);
+  color: var(--text-primary);
+}
+
+.profile-avatar {
+  width: 80px;
+  height: 80px;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.05);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 34px;
+  flex-shrink: 0;
+  border: 2px solid var(--glass-border);
+  color: var(--gold-shiny);
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+}
+
+.profile-header-info h1 {
+  font-family: var(--font-display);
+  font-size: 26px;
+  margin-bottom: 8px;
+  color: var(--text-primary);
+  letter-spacing: 1px;
+}
+
+.profile-badges {
+  display: flex;
+  gap: 10px;
+  flex-wrap: wrap;
+}
+
+.badge {
+  padding: 5px 14px;
+  border-radius: 20px;
+  font-size: 13px;
+  font-weight: 600;
+}
+
+.badge-class {
+  background: rgba(212, 175, 55, 0.1);
+  color: var(--gold-shiny);
+  border: 1px solid var(--gold-glow);
+}
+
+.badge-roll {
+  background: rgba(255, 255, 255, 0.05);
+  color: var(--text-primary);
+  border: 1px solid var(--glass-border);
+}
+
+.profile-body {
+  padding: 40px;
+}
+
+.profile-section {
+  margin-bottom: 40px;
+}
+
+.profile-section:last-child {
+  margin-bottom: 0;
+}
+
+.section-title {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  font-family: var(--font-display);
+  font-size: 18px;
+  color: var(--gold-shiny);
+  margin-bottom: 20px;
+  padding-bottom: 10px;
+  border-bottom: 1px solid var(--glass-border);
+  letter-spacing: 1px;
+}
+
+.info-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 20px;
+}
+
+.info-item {
+  background: rgba(255, 255, 255, 0.02);
+  padding: 14px 18px;
+  border-radius: 12px;
+  border: 1px solid var(--glass-border);
+  border-left: 3px solid var(--gold);
+}
+
+.info-item.full-width {
+  grid-column: 1 / -1;
+}
+
+.info-label {
+  display: block;
+  font-size: 11px;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  color: var(--text-secondary);
+  margin-bottom: 6px;
+  font-weight: 600;
+}
+
+.info-value {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 15px;
+  color: var(--text-primary);
+  font-weight: 500;
+}
+
+/* Attendance */
+.attendance-bar-container {
+  max-width: 100%;
+}
+
+.attendance-bar {
+  height: 28px;
+  background: rgba(255, 255, 255, 0.04);
+  border-radius: 14px;
+  overflow: hidden;
+  border: 1px solid var(--glass-border);
+}
+
+.attendance-fill {
+  height: 100%;
+  background: linear-gradient(90deg, var(--brand-light), var(--brand-glowing));
+  border-radius: 14px;
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  padding-right: 14px;
+  transition: width 1.2s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.attendance-fill span {
+  color: #fff;
+  font-weight: 700;
+  font-size: 13px;
+}
+
+.attendance-status {
+  margin-top: 10px;
+  font-size: 14px;
+  color: var(--text-secondary);
+  font-weight: 500;
+}
+
+/* Grades */
+.grades-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 18px;
+}
+
+.grade-card {
+  background: rgba(255, 255, 255, 0.02);
+  padding: 18px;
+  border-radius: 12px;
+  text-align: center;
+  transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+  border: 1px solid var(--glass-border);
+}
+
+.grade-card:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.2);
+  border-color: var(--gold);
+}
+
+.grade-subject {
+  display: block;
+  font-size: 13px;
+  color: var(--text-secondary);
+  margin-bottom: 8px;
+  font-weight: 500;
+}
+
+.grade-value {
+  display: inline-block;
+  font-size: 20px;
+  font-weight: 700;
+  padding: 4px 14px;
+  border-radius: 8px;
+}
+
+.grade-Aplus {
+  color: #10b981;
+  background: rgba(16, 185, 129, 0.1);
+  border: 1px solid rgba(16, 185, 129, 0.2);
+}
+
+.grade-A {
+  color: #3b82f6;
+  background: rgba(59, 130, 246, 0.1);
+  border: 1px solid rgba(59, 130, 246, 0.2);
+}
+
+.grade-Bplus {
+  color: #f59e0b;
+  background: rgba(245, 158, 11, 0.1);
+  border: 1px solid rgba(245, 158, 11, 0.2);
+}
+
+.grade-B {
+  color: #ef4444;
+  background: rgba(239, 68, 68, 0.1);
+  border: 1px solid rgba(239, 68, 68, 0.2);
+}
+
+/* Achievements */
+.achievements-list {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.achievement-item {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  padding: 14px 20px;
+  background: rgba(255, 255, 255, 0.02);
+  border-radius: 12px;
+  border: 1px solid var(--glass-border);
+  border-left: 4px solid var(--gold);
+  transition: all 0.3s ease;
+}
+
+.achievement-item:hover {
+  transform: translateX(6px);
+  background: rgba(255, 255, 255, 0.04);
+}
+
+.achievement-icon {
+  color: var(--gold-shiny);
+  font-size: 20px;
+  flex-shrink: 0;
+}
+
+.achievement-item span {
+  font-size: 14px;
+  font-weight: 500;
+  color: var(--text-primary);
+}
+
+/* No Result */
+.no-result-card {
+  width: 100%;
+  max-width: 500px;
+  text-align: center;
+  background: rgba(255, 255, 255, 0.02);
+  border: 1px solid var(--glass-border);
+  padding: 60px 40px;
+  border-radius: 24px;
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  box-shadow: 0 15px 40px rgba(0, 0, 0, 0.3);
+}
+
+.no-result-icon {
+  font-size: 60px;
+  margin-bottom: 15px;
+}
+
+.no-result-card h2 {
+  font-family: var(--font-display);
+  font-size: 22px;
+  color: var(--text-primary);
+  margin-bottom: 10px;
+}
+
+.no-result-card p {
+  color: var(--text-secondary);
+  font-size: 14px;
+  margin-bottom: 25px;
+  line-height: 1.6;
+}
+
+.no-result-card .search-btn {
+  display: inline-flex;
+  flex: unset;
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+  .search-fields {
+    grid-template-columns: 1fr;
+    gap: 16px;
+  }
+
+  .search-actions {
+    flex-direction: column;
+  }
+
+  .profile-header {
+    flex-direction: column;
+    text-align: center;
+    padding: 30px 20px;
+    gap: 15px;
+  }
+
+  .profile-badges {
+    justify-content: center;
+  }
+
+  .profile-body {
+    padding: 25px 20px;
+  }
+
+  .info-grid {
+    grid-template-columns: 1fr;
+    gap: 12px;
+  }
+
+  .grades-grid {
+    grid-template-columns: repeat(2, 1fr);
+    gap: 12px;
+  }
+}
+
+@media (max-width: 480px) {
+  .grades-grid {
+    grid-template-columns: 1fr;
+  }
+}

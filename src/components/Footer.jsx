@@ -1,9 +1,11 @@
 import React, { useContext, useState } from 'react';
 import { useForm } from 'react-hook-form';
+import logo from '../assets/logo1.png';
 import { SiteContext } from '../context/SiteContext';
 import { getIcon } from '../utils/iconMap';
-import { FaAngleRight, FaArrowRight, FaEnvelope, FaCheckCircle, FaSpinner } from 'react-icons/fa';
+import { FaAngleRight, FaArrowRight, FaEnvelope, FaCheckCircle, FaSpinner, FaFacebook, FaTwitter, FaInstagram, FaLinkedin } from 'react-icons/fa';
 import { NavLink } from 'react-router-dom';
+import './Footer.css';
 import { subscribeNewsletter } from '../api';
 
 const Footer = () => {

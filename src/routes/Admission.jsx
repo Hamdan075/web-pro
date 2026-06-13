@@ -3,6 +3,7 @@ import Footer from '../components/Footer'
 import AdmissionInfo from '../components/AdmissionInfo'
 import AdMoreInfo from '../components/AdMoreInfo'
 import ApplyNow from '../components/ApplyNow'
+import '../components/Sections.css'
 import useScrollReveal from '../hooks/useScrollReveal'
 
 const Admission = () => {

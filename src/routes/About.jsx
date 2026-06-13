@@ -1,6 +1,8 @@
-import AboutInfo from "../components/AboutInfo";
-import AboutParts from "../components/AboutParts";
-import MissionVision from "../components/MissionVision";
+import React from 'react';
+import AboutInfo from '../components/AboutInfo';
+import AboutParts from '../components/AboutParts';
+import MissionVision from '../components/MissionVision';
+import '../components/Sections.css';
 import Footer from "../components/Footer";
 
 const About = () => {

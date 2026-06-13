@@ -1,7 +1,8 @@
 import React, { useState } from 'react';
 import { useForm } from 'react-hook-form';
-import { FaCheckCircle, FaExclamationCircle } from 'react-icons/fa';
-import { submitAdmission } from '../api';
+import { FaCheckCircle, FaExclamationCircle, FaSpinner } from 'react-icons/fa';
+import { submitAdmission, submitApplication } from '../api';
+import './Forms.css';
 
 const ApplyNow = () => {
   const [submitted, setSubmitted] = useState(false);

@@ -1,9 +1,10 @@
-import { FaBars } from "react-icons/fa";
 import { useState, useContext } from "react";
 import { NavLink, useNavigate } from "react-router-dom";
 import { SiteContext } from "../context/SiteContext";
 import { AuthContext } from "../context/AuthContext";
 import logo from "../assets/logo.png";
+import { FaBars, FaTimes } from "react-icons/fa";
+import "./Navbar.css";
 
 const Navbar = () => {
     const [toggle, setToggle] = useState(false);

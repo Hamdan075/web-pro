@@ -2,6 +2,7 @@ import { useState, useEffect, useRef } from 'react';
 import { NavLink } from 'react-router-dom';
 import { FaBookOpen, FaAward, FaGraduationCap, FaAngleDoubleDown } from 'react-icons/fa';
 import logo from '../assets/logo.png';
+import './BookHero.css';
 
 const BookHero = () => {
   const [scrollProgress, setScrollProgress] = useState(0);

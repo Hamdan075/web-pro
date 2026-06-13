@@ -1,0 +1,175 @@
+.field-error {
+  color: #ef4444 !important;
+  font-size: 13px;
+  margin-top: 6px;
+  margin-bottom: 2px;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  animation: shakeIn 0.35s ease;
+  font-weight: 600;
+}
+
+.field-error::before {
+  content: '⚠';
+  font-size: 14px;
+}
+
+@keyframes shakeIn {
+  0% {
+    transform: translateX(-8px);
+    opacity: 0;
+  }
+
+  25% {
+    transform: translateX(6px);
+  }
+
+  50% {
+    transform: translateX(-4px);
+  }
+
+  75% {
+    transform: translateX(2px);
+  }
+
+  100% {
+    transform: translateX(0);
+    opacity: 1;
+  }
+}
+
+.has-error input,
+.has-error textarea,
+.has-error select {
+  border: 2px solid #ef4444 !important;
+  background-color: rgba(239, 68, 68, 0.05) !important;
+}
+
+.has-error label {
+  color: #ef4444 !important;
+}
+
+/* Success message */
+.form-success-msg {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 14px 18px;
+  border-radius: 10px;
+  margin-bottom: 18px;
+  font-size: 14px;
+  font-weight: 500;
+  animation: slideDown 0.4s ease;
+}
+
+/* Success style for contact form (dark bg) */
+#contact-form .form-success-msg {
+  background: rgba(34, 197, 94, 0.2);
+  border: 1px solid rgba(34, 197, 94, 0.4);
+  color: #86efac;
+}
+
+/* Success style for admission form */
+.form-success-msg.apply-success {
+  background: rgba(34, 197, 94, 0.2);
+  border: 1px solid rgba(34, 197, 94, 0.4);
+  color: #86efac;
+}
+
+@keyframes slideDown {
+  from {
+    opacity: 0;
+    transform: translateY(-10px);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* Polish the apply form */
+.apply {
+  width: 90%;
+  max-width: 700px;
+  margin: 40px auto 80px;
+  background: linear-gradient(135deg, rgba(6, 11, 24, 0.95), rgba(1, 24, 123, 0.2));
+  border: 1px solid var(--glass-border);
+  padding: 40px;
+  border-radius: 20px;
+  box-shadow: 0 15px 35px rgba(0, 0, 0, 0.3);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+}
+
+.apply h3 {
+  font-family: var(--font-display);
+  font-size: 24px;
+  color: var(--text-primary);
+  position: relative;
+  padding-bottom: 12px;
+  letter-spacing: 1px;
+}
+
+.apply h3::after {
+  content: '';
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  width: 50px;
+  height: 3px;
+  background: var(--gold);
+  border-radius: 2px;
+}
+
+.apply .input-box {
+  margin-bottom: 20px;
+  transition: all 0.3s ease;
+}
+
+.apply .input-box label {
+  display: block;
+  font-size: 12px;
+  font-weight: 600;
+  color: var(--text-secondary);
+  margin-bottom: 8px;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  transition: color 0.3s ease;
+}
+
+.apply .input-box input,
+.apply .input-box textarea,
+.apply .input-box select {
+  width: 100%;
+  background: rgba(255, 255, 255, 0.03);
+  border: 1px solid var(--glass-border);
+  border-radius: 8px;
+  outline: none;
+  color: var(--text-primary);
+  padding: 12px 16px;
+  font-size: 0.95rem;
+  transition: all 0.3s ease;
+}
+
+.apply .input-box input:focus,
+.apply .input-box textarea:focus,
+.apply .input-box select:focus {
+  border-color: var(--gold);
+  background: rgba(255, 255, 255, 0.06);
+  box-shadow: 0 0 10px rgba(212, 175, 55, 0.15);
+}
+
+.apply .input-box select option {
+  background-color: var(--bg-dark);
+  color: var(--text-primary);
+}
+
+@media (max-width: 768px) {
+  .apply {
+    width: 95%;
+    padding: 30px 20px;
+  }
+}
+

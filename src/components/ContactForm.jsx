@@ -1,6 +1,8 @@
 import React, { useState } from 'react';
 import { useForm } from 'react-hook-form';
-import { FaCheckCircle, FaExclamationCircle } from 'react-icons/fa';
+import { submitContactForm } from '../api';
+import { FaPaperPlane, FaCheckCircle, FaSpinner, FaExclamationCircle } from 'react-icons/fa';
+import './Forms.css';
 import { submitContact } from '../api';
 
 const ContactForm = () => {

@@ -4,18 +4,19 @@ import {
   Route, 
   RouterProvider,
 } from "react-router-dom";
+import { lazy } from "react";
 
 import Error from "./components/Error";
 
-import Home from "./routes/Home";
-import About from "./routes/About";
-import Facility from "./routes/Facility";
-import Admission from "./routes/Admission";
-import Contact from "./routes/Contact";
-import StudentProfile from "./routes/StudentProfile";
-import AddStudent from "./routes/AddStudent";
-import EditStudent from "./routes/EditStudent";
-import AdminLogin from "./routes/AdminLogin";
+const Home = lazy(() => import("./routes/Home"));
+const About = lazy(() => import("./routes/About"));
+const Facility = lazy(() => import("./routes/Facility"));
+const Admission = lazy(() => import("./routes/Admission"));
+const Contact = lazy(() => import("./routes/Contact"));
+const StudentProfile = lazy(() => import("./routes/StudentProfile"));
+const AddStudent = lazy(() => import("./routes/AddStudent"));
+const EditStudent = lazy(() => import("./routes/EditStudent"));
+const AdminLogin = lazy(() => import("./routes/AdminLogin"));
 
 import RootLayout from "./layouts/RootLayout";
 

@@ -19,13 +19,15 @@ import {
   FaEdit, 
   FaTrashAlt, 
   FaCheckCircle, 
-  FaExclamationCircle 
+  FaExclamationCircle,
+  FaArrowLeft
 } from "react-icons/fa";
 
 const StudentProfile = () => {
   const [searchName, setSearchName] = useState("");
   const [searchRollNo, setSearchRollNo] = useState("");
   const [searchClass, setSearchClass] = useState("");
+  const [searchResults, setSearchResults] = useState([]);
   const [foundStudent, setFoundStudent] = useState(null);
   const [searched, setSearched] = useState(false);
   const [isSearching, setIsSearching] = useState(false);
@@ -44,11 +46,13 @@ const StudentProfile = () => {
         rollNo: searchRollNo,
         class: searchClass,
       });
-      setFoundStudent(results.length > 0 ? results[0] : null);
+      setSearchResults(results);
+      setFoundStudent(results.length === 1 ? results[0] : null);
       setSearched(true);
     } catch (err) {
       console.error('Failed to search students:', err);
       setFoundStudent(null);
+      setSearchResults([]);
       setSearched(true);
     } finally {
       setIsSearching(false);
@@ -60,6 +64,7 @@ const StudentProfile = () => {
     setSearchRollNo("");
     setSearchClass("");
     setFoundStudent(null);
+    setSearchResults([]);
     setSearched(false);
     setDeleteStatus({ success: false, error: null });
   };
@@ -74,6 +79,9 @@ const StudentProfile = () => {
       await deleteStudent(foundStudent._id);
       setDeleteStatus({ success: true, error: null });
       
+      // Remove deleted student from search results list
+      setSearchResults(prev => prev.filter(s => s._id !== foundStudent._id));
+
       // Clear found student and notification after delay
       setTimeout(() => {
         setFoundStudent(null);
@@ -206,164 +214,222 @@ const StudentProfile = () => {
               <span>Student successfully deleted. Resetting search...</span>
             </div>
           ) : foundStudent ? (
-            <div className="profile-card-container">
-              {/* Profile Header */}
-              <div className="profile-header" style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', flexWrap: 'wrap', gap: '20px' }}>
-                <div style={{ display: 'flex', alignItems: 'center', gap: '25px', flexWrap: 'wrap' }}>
-                  <div className="profile-avatar">
-                    <FaUserGraduate />
+            <>
+              {searchResults.length > 1 && (
+                <button onClick={() => setFoundStudent(null)} className="search-btn" style={{ marginBottom: '1.5rem', alignSelf: 'flex-start', padding: '0.6rem 1.2rem', display: 'flex', alignItems: 'center', gap: '0.5rem', background: 'rgba(255, 255, 255, 0.1)', border: '1px solid var(--glass-border)', color: 'white' }}>
+                  <FaArrowLeft /> Back to Results
+                </button>
+              )}
+              <div className="profile-card-container">
+                {/* Profile Header */}
+                <div className="profile-header" style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', flexWrap: 'wrap', gap: '20px' }}>
+                  <div style={{ display: 'flex', alignItems: 'center', gap: '25px', flexWrap: 'wrap' }}>
+                    <div className="profile-avatar">
+                      <FaUserGraduate />
+                    </div>
+                    <div className="profile-header-info">
+                      <h1>{foundStudent.name}</h1>
+                      <div className="profile-badges">
+                        <span className="badge badge-class">Class {foundStudent.class}-{foundStudent.section}</span>
+                        <span className="badge badge-roll">Roll No: {foundStudent.rollNo}</span>
+                      </div>
+                    </div>
                   </div>
-                  <div className="profile-header-info">
-                    <h1>{foundStudent.name}</h1>
-                    <div className="profile-badges">
-                      <span className="badge badge-class">Class {foundStudent.class}-{foundStudent.section}</span>
-                      <span className="badge badge-roll">Roll No: {foundStudent.rollNo}</span>
+
+                  {isAdmin && (
+                    <div className="profile-actions" style={{ display: 'flex', gap: '10px' }}>
+                      <Link to={`/edit-student/${foundStudent._id}`} style={{ 
+                        padding: '0.6rem 1.2rem', 
+                        backgroundColor: 'rgba(255, 255, 255, 0.2)', 
+                        color: 'white',
+                        border: '1px solid rgba(255, 255, 255, 0.4)',
+                        borderRadius: '8px',
+                        textDecoration: 'none',
+                        display: 'flex',
+                        alignItems: 'center',
+                        gap: '0.5rem',
+                        fontWeight: 'bold',
+                        fontSize: '0.9rem',
+                        transition: 'background-color 0.3s'
+                      }}
+                      onMouseOver={(e) => e.currentTarget.style.backgroundColor = 'rgba(255, 255, 255, 0.3)'}
+                      onMouseOut={(e) => e.currentTarget.style.backgroundColor = 'rgba(255, 255, 255, 0.2)'}
+                      >
+                        <FaEdit /> Edit
+                      </Link>
+                      <button onClick={handleDelete} style={{ 
+                        padding: '0.6rem 1.2rem', 
+                        backgroundColor: '#dc2626', 
+                        color: 'white',
+                        border: 'none',
+                        borderRadius: '8px',
+                        cursor: 'pointer',
+                        display: 'flex',
+                        alignItems: 'center',
+                        gap: '0.5rem',
+                        fontWeight: 'bold',
+                        fontSize: '0.9rem',
+                        transition: 'background-color 0.3s'
+                      }}
+                      onMouseOver={(e) => e.currentTarget.style.backgroundColor = '#b91c1c'}
+                      onMouseOut={(e) => e.currentTarget.style.backgroundColor = '#dc2626'}
+                      >
+                        <FaTrashAlt /> Delete
+                      </button>
+                    </div>
+                  )}
+                </div>
+
+                {/* Profile Body */}
+                <div className="profile-body">
+                  {/* Personal Info */}
+                  <div className="profile-section">
+                    <h3 className="section-title">
+                      <FaUserGraduate /> Personal Information
+                    </h3>
+                    <div className="info-grid">
+                      <div className="info-item">
+                        <span className="info-label">Father's Name</span>
+                        <span className="info-value">{foundStudent.fatherName}</span>
+                      </div>
+                      <div className="info-item">
+                        <span className="info-label">Date of Birth</span>
+                        <span className="info-value">{new Date(foundStudent.dateOfBirth).toLocaleDateString()}</span>
+                      </div>
+                      <div className="info-item">
+                        <span className="info-label">Gender</span>
+                        <span className="info-value">{foundStudent.gender}</span>
+                      </div>
+                      <div className="info-item">
+                        <span className="info-label">Blood Group</span>
+                        <span className="info-value">{foundStudent.bloodGroup || 'N/A'}</span>
+                      </div>
+                    </div>
+                  </div>
+
+                  {/* Contact Info */}
+                  <div className="profile-section">
+                    <h3 className="section-title">
+                      <FaPhone /> Contact Information
+                    </h3>
+                    <div className="info-grid">
+                      <div className="info-item">
+                        <span className="info-label">Phone Number</span>
+                        <span className="info-value">{foundStudent.phone || 'N/A'}</span>
+                      </div>
+                      <div className="info-item">
+                        <span className="info-label">Email Address</span>
+                        <span className="info-value">{foundStudent.email || 'N/A'}</span>
+                      </div>
+                      <div className="info-item" style={{ gridColumn: '1 / -1' }}>
+                        <span className="info-label">Home Address</span>
+                        <span className="info-value">{foundStudent.address || 'N/A'}</span>
+                      </div>
+                    </div>
+                  </div>
+
+                  {/* Academic Status */}
+                  <div className="profile-section">
+                    <h3 className="section-title">
+                      <FaCalendarAlt /> Enrollment Details
+                    </h3>
+                    <div className="info-grid">
+                      <div className="info-item">
+                        <span className="info-label">Admission Date</span>
+                        <span className="info-value">{foundStudent.admissionDate ? new Date(foundStudent.admissionDate).toLocaleDateString() : 'N/A'}</span>
+                      </div>
+                      <div className="info-item">
+                        <span className="info-label">Attendance Rate</span>
+                        <div style={{ display: 'flex', alignItems: 'center', gap: '10px', marginTop: '5px' }}>
+                          <div style={{ flex: 1, height: '8px', background: 'rgba(255,255,255,0.1)', borderRadius: '4px', overflow: 'hidden' }}>
+                            <div style={{ width: `${foundStudent.attendance || 0}%`, height: '100%', background: (foundStudent.attendance || 0) >= 75 ? '#10b981' : '#f59e0b', borderRadius: '4px' }}></div>
+                          </div>
+                          <span style={{ fontWeight: 'bold' }}>{foundStudent.attendance || 0}%</span>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+
+                  {/* Grades */}
+                  <div className="profile-section">
+                    <h3 className="section-title">
+                      <FaBookOpen /> Academic Grades
+                    </h3>
+                    <div className="grades-grid" style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(150px, 1fr))', gap: '15px' }}>
+                      {Object.entries(getGrades(foundStudent)).length > 0 ? (
+                        Object.entries(getGrades(foundStudent)).map(([subject, grade]) => (
+                          <div key={subject} style={{ 
+                            background: 'rgba(255, 255, 255, 0.02)', 
+                            border: '1px solid var(--glass-border)', 
+                            borderRadius: '10px', 
+                            padding: '15px', 
+                            textAlign: 'center' 
+                          }}>
+                            <div style={{ fontSize: '0.85rem', color: 'var(--text-secondary)', marginBottom: '5px', textTransform: 'uppercase', letterSpacing: '0.5px' }}>{subject}</div>
+                            <div style={{ fontSize: '1.5rem', fontWeight: 'bold', color: 'var(--gold)' }}>{grade}</div>
+                          </div>
+                        ))
+                      ) : (
+                        <p style={{ color: 'var(--text-secondary)', gridColumn: '1 / -1' }}>No grades recorded yet.</p>
+                      )}
+                    </div>
+                  </div>
+
+                  {/* Achievements */}
+                  <div className="profile-section">
+                    <h3 className="section-title">
+                      <FaTrophy /> Achievements
+                    </h3>
+                    <div className="achievements-list">
+                      {foundStudent.achievements?.length > 0 ? (
+                        foundStudent.achievements.map((ach, i) => (
+                          <div className="achievement-item" key={i}>
+                            <FaTrophy className="achievement-icon" />
+                            <span>{ach}</span>
+                          </div>
+                        ))
+                      ) : (
+                        <p style={{ color: 'var(--text-secondary)' }}>No achievements recorded yet.</p>
+                      )}
                     </div>
                   </div>
                 </div>
-
-                {isAdmin && (
-                  <div className="profile-actions" style={{ display: 'flex', gap: '10px' }}>
-                    <Link to={`/edit-student/${foundStudent._id}`} style={{ 
-                      padding: '0.6rem 1.2rem', 
-                      backgroundColor: 'rgba(255, 255, 255, 0.2)', 
-                      color: 'white',
-                      border: '1px solid rgba(255, 255, 255, 0.4)',
-                      borderRadius: '8px',
-                      textDecoration: 'none',
-                      display: 'flex',
-                      alignItems: 'center',
-                      gap: '0.5rem',
-                      fontWeight: 'bold',
-                      fontSize: '0.9rem',
-                      transition: 'background-color 0.3s'
-                    }}
-                    onMouseOver={(e) => e.currentTarget.style.backgroundColor = 'rgba(255, 255, 255, 0.3)'}
-                    onMouseOut={(e) => e.currentTarget.style.backgroundColor = 'rgba(255, 255, 255, 0.2)'}
-                    >
-                      <FaEdit /> Edit
-                    </Link>
-                    <button onClick={handleDelete} style={{ 
-                      padding: '0.6rem 1.2rem', 
-                      backgroundColor: '#dc2626', 
-                      color: 'white',
-                      border: 'none',
-                      borderRadius: '8px',
-                      cursor: 'pointer',
-                      display: 'flex',
-                      alignItems: 'center',
-                      gap: '0.5rem',
-                      fontWeight: 'bold',
-                      fontSize: '0.9rem',
-                      transition: 'background-color 0.3s'
-                    }}
-                    onMouseOver={(e) => e.currentTarget.style.backgroundColor = '#b91c1c'}
-                    onMouseOut={(e) => e.currentTarget.style.backgroundColor = '#dc2626'}
-                    >
-                      <FaTrashAlt /> Delete
+              </div>
+            </>
+          ) : searchResults.length > 1 ? (
+            <div className="profile-card-container" style={{ maxWidth: '850px', width: '100%', padding: '2.5rem' }}>
+              <h2 style={{ marginBottom: '1rem', color: 'var(--gold)', fontFamily: 'var(--font-display)', display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
+                <FaSearch /> Search Results ({searchResults.length})
+              </h2>
+              <p style={{ color: 'var(--text-secondary)', marginBottom: '2rem' }}>Multiple students matched your query. Please select one to view their profile:</p>
+              <div style={{ display: 'flex', flexDirection: 'column', gap: '1rem' }}>
+                {searchResults.map(student => (
+                  <div key={student._id} style={{
+                    background: 'rgba(255, 255, 255, 0.03)',
+                    border: '1px solid var(--glass-border)',
+                    borderRadius: '12px',
+                    padding: '1.2rem 1.5rem',
+                    display: 'flex',
+                    justifyContent: 'space-between',
+                    alignItems: 'center',
+                    flexWrap: 'wrap',
+                    gap: '15px',
+                    transition: 'background-color 0.3s'
+                  }}
+                  onMouseOver={(e) => e.currentTarget.style.backgroundColor = 'rgba(255, 255, 255, 0.06)'}
+                  onMouseOut={(e) => e.currentTarget.style.backgroundColor = 'rgba(255, 255, 255, 0.03)'}
+                  >
+                    <div>
+                      <h3 style={{ margin: 0, color: 'var(--text-primary)', fontSize: '1.15rem' }}>{student.name}</h3>
+                      <p style={{ margin: '6px 0 0', color: 'var(--text-secondary)', fontSize: '0.9rem' }}>
+                        Class: <strong style={{ color: 'var(--text-primary)' }}>{student.class}-{student.section}</strong> | Roll No: <strong style={{ color: 'var(--text-primary)' }}>{student.rollNo}</strong>
+                      </p>
+                    </div>
+                    <button onClick={() => setFoundStudent(student)} className="search-btn" style={{ padding: '0.6rem 1.2rem', fontSize: '0.9rem' }}>
+                      View Profile
                     </button>
                   </div>
-                )}
-              </div>
-
-              {/* Profile Body */}
-              <div className="profile-body">
-                {/* Personal Info */}
-                <div className="profile-section">
-                  <h3 className="section-title">
-                    <FaUserGraduate /> Personal Information
-                  </h3>
-                  <div className="info-grid">
-                    <div className="info-item">
-                      <span className="info-label">Father's Name</span>
-                      <span className="info-value">{foundStudent.fatherName}</span>
-                    </div>
-                    <div className="info-item">
-                      <span className="info-label">Date of Birth</span>
-                      <span className="info-value">
-                        <FaCalendarAlt /> {new Date(foundStudent.dateOfBirth).toLocaleDateString("en-PK", { year: "numeric", month: "long", day: "numeric" })}
-                      </span>
-                    </div>
-                    <div className="info-item">
-                      <span className="info-label">Gender</span>
-                      <span className="info-value">{foundStudent.gender}</span>
-                    </div>
-                    <div className="info-item">
-                      <span className="info-label">Blood Group</span>
-                      <span className="info-value">{foundStudent.bloodGroup}</span>
-                    </div>
-                    <div className="info-item">
-                      <span className="info-label">Phone</span>
-                      <span className="info-value"><FaPhone /> {foundStudent.phone}</span>
-                    </div>
-                    <div className="info-item">
-                      <span className="info-label">Email</span>
-                      <span className="info-value"><FaEnvelope /> {foundStudent.email}</span>
-                    </div>
-                    <div className="info-item full-width">
-                      <span className="info-label">Address</span>
-                      <span className="info-value">{foundStudent.address}</span>
-                    </div>
-                    <div className="info-item">
-                      <span className="info-label">Admission Date</span>
-                      <span className="info-value">{new Date(foundStudent.admissionDate).toLocaleDateString("en-PK", { year: "numeric", month: "long", day: "numeric" })}</span>
-                    </div>
-                  </div>
-                </div>
-
-                {/* Attendance */}
-                <div className="profile-section">
-                  <h3 className="section-title">
-                    <FaChartLine /> Attendance
-                  </h3>
-                  <div className="attendance-bar-container">
-                    <div className="attendance-bar">
-                      <div
-                        className="attendance-fill"
-                        style={{ width: `${foundStudent.attendance}%` }}
-                      >
-                        <span>{foundStudent.attendance}%</span>
-                      </div>
-                    </div>
-                    <p className="attendance-status">
-                      {foundStudent.attendance >= 90
-                        ? " Excellent Attendance"
-                        : foundStudent.attendance >= 75
-                          ? " Good Attendance"
-                          : " Needs Improvement"}
-                    </p>
-                  </div>
-                </div>
-
-                {/* Grades */}
-                <div className="profile-section">
-                  <h3 className="section-title">
-                    <FaBookOpen /> Academic Grades
-                  </h3>
-                  <div className="grades-grid">
-                    {Object.entries(getGrades(foundStudent)).map(([subject, grade]) => (
-                      <div className="grade-card" key={subject}>
-                        <span className="grade-subject">{subject}</span>
-                        <span className={`grade-value grade-${grade.replace("+", "plus")}`}>{grade}</span>
-                      </div>
-                    ))}
-                  </div>
-                </div>
-
-                {/* Achievements */}
-                <div className="profile-section">
-                  <h3 className="section-title">
-                    <FaTrophy /> Achievements
-                  </h3>
-                  <div className="achievements-list">
-                    {foundStudent.achievements?.map((ach, i) => (
-                      <div className="achievement-item" key={i}>
-                        <FaTrophy className="achievement-icon" />
-                        <span>{ach}</span>
-                      </div>
-                    ))}
-                  </div>
-                </div>
+                ))}
               </div>
             </div>
           ) : (

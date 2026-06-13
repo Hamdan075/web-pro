@@ -121,3 +121,16 @@ export const deleteStudent = async (id) => {
   }
   return response.json();
 };
+
+export const subscribeNewsletter = async (email) => {
+  const response = await fetch(`${API_BASE}/newsletter/subscribe`, {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({ email }),
+  });
+  if (!response.ok) {
+    const errorData = await response.json().catch(() => ({}));
+    throw new Error(errorData.error || `API error: ${response.statusText}`);
+  }
+  return response.json();
+};

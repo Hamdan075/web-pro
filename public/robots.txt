@@ -1,0 +1,4 @@
+User-agent: *
+Allow: /
+
+Sitemap: https://cambridge-school-iota.vercel.app/sitemap.xml

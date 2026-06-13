@@ -2022,6 +2022,10 @@ footer .col h2 {
   }
 }
 
+.spin {
+  animation: spin 1s linear infinite;
+}
+
 /* Admin form select/textarea styling (dark theme) */
 .student-search-form select {
   padding: 12px 16px;

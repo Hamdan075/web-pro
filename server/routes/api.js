@@ -15,9 +15,11 @@ const MoreInfo = require('../models/MoreInfo');
 const Student = require('../models/Student');
 const Program = require('../models/Program');
 const Admin = require('../models/Admin');
+const NewsletterSubscriber = require('../models/NewsletterSubscriber');
 
 const verifyToken = require('../middleware/auth');
 const { loginLimiter, formLimiter } = require('../middleware/rateLimiter');
+const { sendEmailNotification } = require('../utils/emailNotifier');
 
 // GET /api/navlinks
 router.get('/navlinks', async (req, res) => {
@@ -149,6 +151,22 @@ router.post('/contact', formLimiter, async (req, res) => {
     const ContactMessage = require('../models/ContactMessage');
     const newMessage = new ContactMessage(req.body);
     const savedMessage = await newMessage.save();
+
+    // Send email notification (async)
+    const emailSubject = `New Contact Message: ${savedMessage.subject}`;
+    const emailHtml = `
+      <h2>New Contact Us Message Received</h2>
+      <hr/>
+      <p><strong>Name:</strong> ${savedMessage.name}</p>
+      <p><strong>Email:</strong> ${savedMessage.email}</p>
+      <p><strong>Subject:</strong> ${savedMessage.subject}</p>
+      <p><strong>Message:</strong></p>
+      <div style="background: #f8f9fb; padding: 15px; border-radius: 8px; border: 1px solid #e1e5ea; color: #333;">
+        ${savedMessage.message.replace(/\n/g, '<br/>')}
+      </div>
+    `;
+    sendEmailNotification(emailSubject, emailHtml);
+
     res.status(201).json(savedMessage);
   } catch (err) {
     res.status(400).json({ error: err.message });
@@ -161,9 +179,51 @@ router.post('/admission', formLimiter, async (req, res) => {
     const AdmissionApplication = require('../models/AdmissionApplication');
     const newApp = new AdmissionApplication(req.body);
     const savedApp = await newApp.save();
+
+    // Send email notification (async)
+    const emailSubject = `New Admission Application: ${savedApp.firstname} ${savedApp.lastname}`;
+    const emailHtml = `
+      <h2>New Admission Application Received</h2>
+      <hr/>
+      <table style="width: 100%; border-collapse: collapse; font-family: sans-serif; color: #333;">
+        <tr style="background: #f8f9fb;"><td style="padding: 8px; font-weight: bold; width: 180px; border-bottom: 1px solid #eee;">Applicant Name:</td><td style="padding: 8px; border-bottom: 1px solid #eee;">${savedApp.firstname} ${savedApp.lastname}</td></tr>
+        <tr><td style="padding: 8px; font-weight: bold; border-bottom: 1px solid #eee;">Gender:</td><td style="padding: 8px; border-bottom: 1px solid #eee;">${savedApp.gender}</td></tr>
+        <tr style="background: #f8f9fb;"><td style="padding: 8px; font-weight: bold; border-bottom: 1px solid #eee;">Email Address:</td><td style="padding: 8px; border-bottom: 1px solid #eee;">${savedApp.email}</td></tr>
+        <tr><td style="padding: 8px; font-weight: bold; border-bottom: 1px solid #eee;">Phone Number:</td><td style="padding: 8px; border-bottom: 1px solid #eee;">${savedApp.phone}</td></tr>
+        <tr style="background: #f8f9fb;"><td style="padding: 8px; font-weight: bold; border-bottom: 1px solid #eee;">Nationality:</td><td style="padding: 8px; border-bottom: 1px solid #eee;">${savedApp.nationality}</td></tr>
+        <tr><td style="padding: 8px; font-weight: bold; border-bottom: 1px solid #eee;">State:</td><td style="padding: 8px; border-bottom: 1px solid #eee;">${savedApp.state}</td></tr>
+        <tr style="background: #f8f9fb;"><td style="padding: 8px; font-weight: bold; border-bottom: 1px solid #eee;">Home Address:</td><td style="padding: 8px; border-bottom: 1px solid #eee;">${savedApp.address}</td></tr>
+        <tr><td style="padding: 8px; font-weight: bold; border-bottom: 1px solid #eee;">How they heard of us:</td><td style="padding: 8px; border-bottom: 1px solid #eee;">${savedApp.howKnow}</td></tr>
+      </table>
+    `;
+    sendEmailNotification(emailSubject, emailHtml);
+
     res.status(201).json(savedApp);
   } catch (err) {
     res.status(400).json({ error: err.message });
+  }
+});
+
+// POST /api/newsletter/subscribe — Subscribe to newsletter
+router.post('/newsletter/subscribe', formLimiter, async (req, res) => {
+  try {
+    const { email } = req.body;
+    if (!email) {
+      return res.status(400).json({ error: 'Email is required' });
+    }
+
+    // Check if already subscribed
+    const existing = await NewsletterSubscriber.findOne({ email: email.toLowerCase() });
+    if (existing) {
+      return res.status(400).json({ error: 'You are already subscribed to our newsletter' });
+    }
+
+    const newSubscriber = new NewsletterSubscriber({ email: email.toLowerCase() });
+    await newSubscriber.save();
+
+    res.status(201).json({ message: 'Subscribed successfully' });
+  } catch (err) {
+    res.status(500).json({ error: err.message });
   }
 });
 

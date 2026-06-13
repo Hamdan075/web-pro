@@ -1,20 +1,35 @@
-import React, { useContext } from 'react';
+import React, { useContext, useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { SiteContext } from '../context/SiteContext';
 import { getIcon } from '../utils/iconMap';
-import { FaAngleRight, FaArrowRight, FaEnvelope } from 'react-icons/fa';
+import { FaAngleRight, FaArrowRight, FaEnvelope, FaCheckCircle, FaSpinner } from 'react-icons/fa';
 import { NavLink } from 'react-router-dom';
+import { subscribeNewsletter } from '../api';
 
 const Footer = () => {
     const { navLinks, footerContact, footerContactNum } = useContext(SiteContext);
+    const [subState, setSubState] = useState({ loading: false, success: false, error: null });
 
     const {
         register, 
         formState: {errors}, 
-        handleSubmit
+        handleSubmit,
+        reset
       } = useForm({
         mode: "all",
       });
+
+    const onSubmit = async (data) => {
+        setSubState({ loading: true, success: false, error: null });
+        try {
+            await subscribeNewsletter(data.email);
+            setSubState({ loading: false, success: true, error: null });
+            reset();
+            setTimeout(() => setSubState(prev => ({ ...prev, success: false })), 4000);
+        } catch (err) {
+            setSubState({ loading: false, success: false, error: err.message });
+        }
+    };
 
   return (
     <footer>
@@ -52,11 +67,12 @@ const Footer = () => {
         <div className="col fourth-col">
             <h2>Get Informed</h2>
             <p>Subscribe to our newsletter</p>
-            <form onSubmit={handleSubmit(data => console.log(data))}>
+            <form onSubmit={handleSubmit(onSubmit)}>
                 <FaEnvelope />
                 <input 
                     type="email" 
                     placeholder='Enter your email address'
+                    disabled={subState.loading}
                     {...register("email", {
                         required: "Email is required",
                         pattern: {
@@ -67,11 +83,14 @@ const Footer = () => {
                 />
                 <button 
                     type='submit' 
-                    style={{ background: 'transparent', border: 'none', color: 'white', cursor: 'pointer', }}>
-                    <FaArrowRight />
+                    disabled={subState.loading}
+                    style={{ background: 'transparent', border: 'none', color: 'white', cursor: 'pointer', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+                    {subState.loading ? <FaSpinner className="spin" /> : <FaArrowRight />}
                 </button>
             </form>
-            <p style={{color: "red",}}>{errors.email?.message}</p>
+            {errors.email && <p style={{color: "red", marginTop: "5px", fontSize: "0.85rem"}}>{errors.email.message}</p>}
+            {subState.success && <p style={{color: "var(--gold)", marginTop: "5px", fontSize: "0.85rem", display: 'flex', alignItems: 'center', gap: '4px'}}><FaCheckCircle /> Subscribed successfully!</p>}
+            {subState.error && <p style={{color: "red", marginTop: "5px", fontSize: "0.85rem"}}>{subState.error}</p>}
         </div>
     </footer>
   )

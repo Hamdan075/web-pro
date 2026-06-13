@@ -86,14 +86,30 @@ const BookHero = () => {
           {/* Left Page (Page 1) */}
           <div 
             className="book-page left-page"
-            style={{ transform: `rotateY(${leftPageRotateY}deg)` }}
+            style={{ 
+              transform: `rotateY(${leftPageRotateY}deg)`,
+              transformStyle: 'preserve-3d'
+            }}
           >
-            <FaAward className="page-crest" />
-            <h3 className="page-title">WELCOME</h3>
-            <p className="page-text">
-              To Cambridge School, a virtual home where knowledge thrives, dreams soar, and friendships flourish.
-            </p>
-            <div className="page-footer">PAGE I</div>
+            <div 
+              style={{
+                transform: 'rotateY(180deg) translateZ(1px)',
+                width: '100%',
+                height: '100%',
+                display: 'flex',
+                flexDirection: 'column',
+                alignItems: 'center',
+                justifyContent: 'space-between',
+                backfaceVisibility: 'hidden'
+              }}
+            >
+              <FaAward className="page-crest" />
+              <h3 className="page-title">WELCOME</h3>
+              <p className="page-text">
+                To Cambridge School, a virtual home where knowledge thrives, dreams soar, and friendships flourish.
+              </p>
+              <div className="page-footer">PAGE I</div>
+            </div>
           </div>
 
           {/* Front Cover */}

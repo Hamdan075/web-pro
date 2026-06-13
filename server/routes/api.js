@@ -155,14 +155,37 @@ router.post('/contact', formLimiter, async (req, res) => {
     // Send email notification (async)
     const emailSubject = `New Contact Message: ${savedMessage.subject}`;
     const emailHtml = `
-      <h2>New Contact Us Message Received</h2>
-      <hr/>
-      <p><strong>Name:</strong> ${savedMessage.name}</p>
-      <p><strong>Email:</strong> ${savedMessage.email}</p>
-      <p><strong>Subject:</strong> ${savedMessage.subject}</p>
-      <p><strong>Message:</strong></p>
-      <div style="background: #f8f9fb; padding: 15px; border-radius: 8px; border: 1px solid #e1e5ea; color: #333;">
-        ${savedMessage.message.replace(/\n/g, '<br/>')}
+      <div style="font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; max-width: 600px; margin: 0 auto; border: 1px solid #e0e0e0; border-radius: 12px; overflow: hidden; box-shadow: 0 4px 15px rgba(0,0,0,0.05); background-color: #ffffff;">
+        <div style="background: linear-gradient(135deg, #1e3c72 0%, #2a5298 100%); padding: 30px; text-align: center;">
+          <img src="cid:schoollogo" alt="Cambridge School Logo" style="height: 70px; margin-bottom: 10px; filter: drop-shadow(0 2px 4px rgba(0,0,0,0.2));" />
+          <h1 style="color: #ffffff; margin: 0; font-size: 22px; font-weight: 600; letter-spacing: 0.5px;">Cambridge School</h1>
+          <p style="color: #cbd5e1; margin: 5px 0 0 0; font-size: 14px;">Contact Us Message Center</p>
+        </div>
+        <div style="padding: 30px; color: #334155; line-height: 1.6;">
+          <h2 style="color: #1e3c72; margin-top: 0; font-size: 18px; border-bottom: 2px solid #f1f5f9; padding-bottom: 10px;">New Message Received</h2>
+          <table style="width: 100%; border-collapse: collapse; margin-top: 20px;">
+            <tr>
+              <td style="padding: 8px 0; font-weight: bold; color: #64748b; width: 120px; vertical-align: top;">Name:</td>
+              <td style="padding: 8px 0; color: #1e293b;">${savedMessage.name}</td>
+            </tr>
+            <tr>
+              <td style="padding: 8px 0; font-weight: bold; color: #64748b; vertical-align: top;">Email:</td>
+              <td style="padding: 8px 0;"><a href="mailto:${savedMessage.email}" style="color: #2563eb; text-decoration: none; font-weight: 500;">${savedMessage.email}</a></td>
+            </tr>
+            <tr>
+              <td style="padding: 8px 0; font-weight: bold; color: #64748b; vertical-align: top;">Subject:</td>
+              <td style="padding: 8px 0; color: #1e293b; font-weight: 500;">${savedMessage.subject}</td>
+            </tr>
+          </table>
+          <div style="margin-top: 25px; padding: 20px; background-color: #f8fafc; border-radius: 8px; border: 1px solid #e2e8f0;">
+            <p style="margin: 0 0 10px 0; font-weight: bold; color: #475569; font-size: 14px; text-transform: uppercase; letter-spacing: 0.5px;">Message Details</p>
+            <div style="color: #334155; font-size: 15px; white-space: pre-wrap;">${savedMessage.message}</div>
+          </div>
+        </div>
+        <div style="background-color: #f8fafc; padding: 20px; text-align: center; border-top: 1px solid #f1f5f9; font-size: 12px; color: #94a3b8;">
+          <p style="margin: 0;">This is an automated notification from your Cambridge School Web Portal.</p>
+          <p style="margin: 5px 0 0 0;">&copy; 2026 Cambridge School. All rights reserved.</p>
+        </div>
       </div>
     `;
     sendEmailNotification(emailSubject, emailHtml);
@@ -183,18 +206,54 @@ router.post('/admission', formLimiter, async (req, res) => {
     // Send email notification (async)
     const emailSubject = `New Admission Application: ${savedApp.firstname} ${savedApp.lastname}`;
     const emailHtml = `
-      <h2>New Admission Application Received</h2>
-      <hr/>
-      <table style="width: 100%; border-collapse: collapse; font-family: sans-serif; color: #333;">
-        <tr style="background: #f8f9fb;"><td style="padding: 8px; font-weight: bold; width: 180px; border-bottom: 1px solid #eee;">Applicant Name:</td><td style="padding: 8px; border-bottom: 1px solid #eee;">${savedApp.firstname} ${savedApp.lastname}</td></tr>
-        <tr><td style="padding: 8px; font-weight: bold; border-bottom: 1px solid #eee;">Gender:</td><td style="padding: 8px; border-bottom: 1px solid #eee;">${savedApp.gender}</td></tr>
-        <tr style="background: #f8f9fb;"><td style="padding: 8px; font-weight: bold; border-bottom: 1px solid #eee;">Email Address:</td><td style="padding: 8px; border-bottom: 1px solid #eee;">${savedApp.email}</td></tr>
-        <tr><td style="padding: 8px; font-weight: bold; border-bottom: 1px solid #eee;">Phone Number:</td><td style="padding: 8px; border-bottom: 1px solid #eee;">${savedApp.phone}</td></tr>
-        <tr style="background: #f8f9fb;"><td style="padding: 8px; font-weight: bold; border-bottom: 1px solid #eee;">Nationality:</td><td style="padding: 8px; border-bottom: 1px solid #eee;">${savedApp.nationality}</td></tr>
-        <tr><td style="padding: 8px; font-weight: bold; border-bottom: 1px solid #eee;">State:</td><td style="padding: 8px; border-bottom: 1px solid #eee;">${savedApp.state}</td></tr>
-        <tr style="background: #f8f9fb;"><td style="padding: 8px; font-weight: bold; border-bottom: 1px solid #eee;">Home Address:</td><td style="padding: 8px; border-bottom: 1px solid #eee;">${savedApp.address}</td></tr>
-        <tr><td style="padding: 8px; font-weight: bold; border-bottom: 1px solid #eee;">How they heard of us:</td><td style="padding: 8px; border-bottom: 1px solid #eee;">${savedApp.howKnow}</td></tr>
-      </table>
+      <div style="font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; max-width: 600px; margin: 0 auto; border: 1px solid #e0e0e0; border-radius: 12px; overflow: hidden; box-shadow: 0 4px 15px rgba(0,0,0,0.05); background-color: #ffffff;">
+        <div style="background: linear-gradient(135deg, #1e3c72 0%, #2a5298 100%); padding: 30px; text-align: center;">
+          <img src="cid:schoollogo" alt="Cambridge School Logo" style="height: 70px; margin-bottom: 10px; filter: drop-shadow(0 2px 4px rgba(0,0,0,0.2));" />
+          <h1 style="color: #ffffff; margin: 0; font-size: 22px; font-weight: 600; letter-spacing: 0.5px;">Cambridge School</h1>
+          <p style="color: #cbd5e1; margin: 5px 0 0 0; font-size: 14px;">Admission Application System</p>
+        </div>
+        <div style="padding: 30px; color: #334155; line-height: 1.6;">
+          <h2 style="color: #1e3c72; margin-top: 0; font-size: 18px; border-bottom: 2px solid #f1f5f9; padding-bottom: 10px;">New Application Received</h2>
+          <table style="width: 100%; border-collapse: collapse; margin-top: 20px; font-size: 15px;">
+            <tr style="background-color: #f8fafc;">
+              <td style="padding: 10px; font-weight: bold; color: #64748b; width: 180px; border-bottom: 1px solid #e2e8f0;">Applicant Name:</td>
+              <td style="padding: 10px; color: #1e293b; font-weight: 500; border-bottom: 1px solid #e2e8f0;">${savedApp.firstname} ${savedApp.lastname}</td>
+            </tr>
+            <tr>
+              <td style="padding: 10px; font-weight: bold; color: #64748b; border-bottom: 1px solid #e2e8f0;">Gender:</td>
+              <td style="padding: 10px; color: #1e293b; border-bottom: 1px solid #e2e8f0;">${savedApp.gender}</td>
+            </tr>
+            <tr style="background-color: #f8fafc;">
+              <td style="padding: 10px; font-weight: bold; color: #64748b; border-bottom: 1px solid #e2e8f0;">Email Address:</td>
+              <td style="padding: 10px; border-bottom: 1px solid #e2e8f0;"><a href="mailto:${savedApp.email}" style="color: #2563eb; text-decoration: none; font-weight: 500;">${savedApp.email}</a></td>
+            </tr>
+            <tr>
+              <td style="padding: 10px; font-weight: bold; color: #64748b; border-bottom: 1px solid #e2e8f0;">Phone Number:</td>
+              <td style="padding: 10px; color: #1e293b; border-bottom: 1px solid #e2e8f0;">${savedApp.phone}</td>
+            </tr>
+            <tr style="background-color: #f8fafc;">
+              <td style="padding: 10px; font-weight: bold; color: #64748b; border-bottom: 1px solid #e2e8f0;">Nationality:</td>
+              <td style="padding: 10px; color: #1e293b; border-bottom: 1px solid #e2e8f0;">${savedApp.nationality}</td>
+            </tr>
+            <tr>
+              <td style="padding: 10px; font-weight: bold; color: #64748b; border-bottom: 1px solid #e2e8f0;">State:</td>
+              <td style="padding: 10px; color: #1e293b; border-bottom: 1px solid #e2e8f0;">${savedApp.state}</td>
+            </tr>
+            <tr style="background-color: #f8fafc;">
+              <td style="padding: 10px; font-weight: bold; color: #64748b; border-bottom: 1px solid #e2e8f0;">Home Address:</td>
+              <td style="padding: 10px; color: #1e293b; border-bottom: 1px solid #e2e8f0;">${savedApp.address}</td>
+            </tr>
+            <tr>
+              <td style="padding: 10px; font-weight: bold; color: #64748b; border-bottom: 1px solid #e2e8f0;">How they heard of us:</td>
+              <td style="padding: 10px; color: #1e293b; border-bottom: 1px solid #e2e8f0;">${savedApp.howKnow}</td>
+            </tr>
+          </table>
+        </div>
+        <div style="background-color: #f8fafc; padding: 20px; text-align: center; border-top: 1px solid #f1f5f9; font-size: 12px; color: #94a3b8;">
+          <p style="margin: 0;">This is an automated notification from your Cambridge School Web Portal.</p>
+          <p style="margin: 5px 0 0 0;">&copy; 2026 Cambridge School. All rights reserved.</p>
+        </div>
+      </div>
     `;
     sendEmailNotification(emailSubject, emailHtml);
 

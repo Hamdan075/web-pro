@@ -24,11 +24,17 @@ const sendEmailNotification = async (subject, htmlContent) => {
       },
     });
 
+    const path = require('path');
     const info = await transporter.sendMail({
-      from: `"Cambridge School Portal" <${SMTP_USER}>`,
+      from: `"Cambridge School" <${SMTP_USER}>`,
       to: NOTIFICATION_EMAIL,
       subject: subject,
       html: htmlContent,
+      attachments: [{
+        filename: 'logo.png',
+        path: path.join(__dirname, '../../public/logo.png'),
+        cid: 'schoollogo'
+      }]
     });
 
     console.log('✅ Email notification sent successfully:', info.messageId);

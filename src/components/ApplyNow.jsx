@@ -53,6 +53,8 @@ const ApplyNow = () => {
         <input
           id="firstname"
           type="text"
+          aria-invalid={errors.firstname ? "true" : "false"}
+          aria-describedby={errors.firstname ? "firstname-error" : undefined}
           {...register('firstname', {
             required: 'First name is required',
             minLength: { value: 2, message: 'Must be at least 2 characters' },
@@ -63,7 +65,7 @@ const ApplyNow = () => {
             },
           })}
         />
-        {errors.firstname && <p className="field-error apply-error">{errors.firstname.message}</p>}
+        {errors.firstname && <p id="firstname-error" className="field-error apply-error">{errors.firstname.message}</p>}
       </div>
 
       {/* Lastname */}
@@ -72,6 +74,8 @@ const ApplyNow = () => {
         <input
           id="lastname"
           type="text"
+          aria-invalid={errors.lastname ? "true" : "false"}
+          aria-describedby={errors.lastname ? "lastname-error" : undefined}
           {...register('lastname', {
             required: 'Last name is required',
             minLength: { value: 2, message: 'Must be at least 2 characters' },
@@ -82,7 +86,7 @@ const ApplyNow = () => {
             },
           })}
         />
-        {errors.lastname && <p className="field-error apply-error">{errors.lastname.message}</p>}
+        {errors.lastname && <p id="lastname-error" className="field-error apply-error">{errors.lastname.message}</p>}
       </div>
 
       {/* Gender */}
@@ -90,6 +94,8 @@ const ApplyNow = () => {
         <label htmlFor="gender">Gender *</label>
         <select
           id="gender"
+          aria-invalid={errors.gender ? "true" : "false"}
+          aria-describedby={errors.gender ? "gender-error" : undefined}
           style={{
             width: '100%',
             border: 0,
@@ -111,7 +117,7 @@ const ApplyNow = () => {
           <option value="male">Male</option>
           <option value="female">Female</option>
         </select>
-        {errors.gender && <p className="field-error apply-error">{errors.gender.message}</p>}
+        {errors.gender && <p id="gender-error" className="field-error apply-error">{errors.gender.message}</p>}
       </div>
 
       {/* Email */}
@@ -120,6 +126,8 @@ const ApplyNow = () => {
         <input
           id="email"
           type="email"
+          aria-invalid={errors.email ? "true" : "false"}
+          aria-describedby={errors.email ? "email-error" : undefined}
           {...register('email', {
             required: 'Email is required',
             pattern: {
@@ -128,7 +136,7 @@ const ApplyNow = () => {
             },
           })}
         />
-        {errors.email && <p className="field-error apply-error">{errors.email.message}</p>}
+        {errors.email && <p id="email-error" className="field-error apply-error">{errors.email.message}</p>}
       </div>
 
       {/* Phone */}
@@ -137,6 +145,8 @@ const ApplyNow = () => {
         <input
           id="phone"
           type="text"
+          aria-invalid={errors.phone ? "true" : "false"}
+          aria-describedby={errors.phone ? "phone-error" : undefined}
           {...register('phone', {
             required: 'Phone number is required',
             pattern: {
@@ -145,7 +155,7 @@ const ApplyNow = () => {
             },
           })}
         />
-        {errors.phone && <p className="field-error apply-error">{errors.phone.message}</p>}
+        {errors.phone && <p id="phone-error" className="field-error apply-error">{errors.phone.message}</p>}
       </div>
 
       {/* Nationality */}
@@ -154,6 +164,8 @@ const ApplyNow = () => {
         <input
           id="nationality"
           type="text"
+          aria-invalid={errors.nationality ? "true" : "false"}
+          aria-describedby={errors.nationality ? "nationality-error" : undefined}
           {...register('nationality', {
             required: 'Nationality is required',
             minLength: { value: 2, message: 'Must be at least 2 characters' },
@@ -163,7 +175,7 @@ const ApplyNow = () => {
             },
           })}
         />
-        {errors.nationality && <p className="field-error apply-error">{errors.nationality.message}</p>}
+        {errors.nationality && <p id="nationality-error" className="field-error apply-error">{errors.nationality.message}</p>}
       </div>
 
       {/* State */}
@@ -172,12 +184,14 @@ const ApplyNow = () => {
         <input
           id="state"
           type="text"
+          aria-invalid={errors.state ? "true" : "false"}
+          aria-describedby={errors.state ? "state-error" : undefined}
           {...register('state', {
             required: 'State is required',
             minLength: { value: 2, message: 'Must be at least 2 characters' },
           })}
         />
-        {errors.state && <p className="field-error apply-error">{errors.state.message}</p>}
+        {errors.state && <p id="state-error" className="field-error apply-error">{errors.state.message}</p>}
       </div>
 
       {/* Address */}
@@ -186,12 +200,14 @@ const ApplyNow = () => {
         <input
           id="address"
           type="text"
+          aria-invalid={errors.address ? "true" : "false"}
+          aria-describedby={errors.address ? "address-error" : undefined}
           {...register('address', {
             required: 'Home address is required',
             minLength: { value: 5, message: 'Address must be at least 5 characters' },
           })}
         />
-        {errors.address && <p className="field-error apply-error">{errors.address.message}</p>}
+        {errors.address && <p id="address-error" className="field-error apply-error">{errors.address.message}</p>}
       </div>
 
       {/* How did you know about us */}
@@ -199,13 +215,15 @@ const ApplyNow = () => {
         <label htmlFor="how-know">How did you know about us *</label>
         <textarea
           id="how-know"
+          aria-invalid={errors.howKnow ? "true" : "false"}
+          aria-describedby={errors.howKnow ? "howKnow-error" : undefined}
           {...register('howKnow', {
             required: 'This field is required',
             minLength: { value: 5, message: 'Please provide at least 5 characters' },
             maxLength: { value: 300, message: 'Must be at most 300 characters' },
           })}
         ></textarea>
-        {errors.howKnow && <p className="field-error apply-error">{errors.howKnow.message}</p>}
+        {errors.howKnow && <p id="howKnow-error" className="field-error apply-error">{errors.howKnow.message}</p>}
       </div>
 
 

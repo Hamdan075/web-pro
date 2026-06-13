@@ -135,9 +135,9 @@ const BookHero = () => {
         >
           <div className="home">
             <div className="home-bg-overlay" />
-            <h1 className="title">Welcome to Cambridge School</h1>
+            <h1 className="title">Empowering the Next Generation of Leaders</h1>
             <p className="info">
-              We are delighted to have you visit our virtual home - a place where knowledge thrives, dreams soar, and friendships flourish. At Cambridge school, we believe in cultivating an environment that fosters academic excellence, nurtures creativity, and embraces diversity.
+              Join a community dedicated to academic excellence, innovation, and shaping the future. Cultivating an environment where creativity thrives and diversity is celebrated.
             </p>
             <NavLink to="/about" className="btn btn-primary" style={{ marginTop: '20px' }}>
               Explore Our Campus

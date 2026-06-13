@@ -49,8 +49,11 @@ const ContactForm = () => {
 
         <div className={`input-box ${errors.name ? 'has-error' : ''}`}>
           <input 
+            id="name"
             placeholder='Full Name *'
             aria-label='Full Name'
+            aria-invalid={errors.name ? "true" : "false"}
+            aria-describedby={errors.name ? "name-error" : undefined}
             {...register("name", {
               required: "Name is required",
               minLength: {
@@ -67,14 +70,17 @@ const ContactForm = () => {
               }
             })}
             />
-            {errors.name && <p className="field-error">{errors.name.message}</p>}
+            {errors.name && <p id="name-error" className="field-error">{errors.name.message}</p>}
         </div>
 
         <div className={`input-box ${errors.email ? 'has-error' : ''}`}>
           <input 
+            id="email"
             placeholder='Email Address *'
             type="email"
             aria-label='Email Address'
+            aria-invalid={errors.email ? "true" : "false"}
+            aria-describedby={errors.email ? "email-error" : undefined}
             {...register("email", {
               required: "Email is required",
               pattern: {
@@ -83,13 +89,16 @@ const ContactForm = () => {
               }
             })}
             />
-            {errors.email && <p className="field-error">{errors.email.message}</p>}
+            {errors.email && <p id="email-error" className="field-error">{errors.email.message}</p>}
         </div>
 
         <div className={`input-box ${errors.subject ? 'has-error' : ''}`}>
           <input 
+            id="subject"
             placeholder='Subject *'
             aria-label='Subject'
+            aria-invalid={errors.subject ? "true" : "false"}
+            aria-describedby={errors.subject ? "subject-error" : undefined}
             {...register("subject", {
               required: "Subject is required",
               minLength: {
@@ -102,13 +111,16 @@ const ContactForm = () => {
               },
             })}
             />
-            {errors.subject && <p className="field-error">{errors.subject.message}</p>}
+            {errors.subject && <p id="subject-error" className="field-error">{errors.subject.message}</p>}
         </div>
 
         <div className={`input-box ${errors.message ? 'has-error' : ''}`}>
           <textarea 
+            id="message"
             placeholder='Your Message *'
             aria-label='Your Message'
+            aria-invalid={errors.message ? "true" : "false"}
+            aria-describedby={errors.message ? "message-error" : undefined}
             rows={30}
             cols={30}
             {...register("message", {
@@ -123,7 +135,7 @@ const ContactForm = () => {
               },
             })}
           ></textarea>
-            {errors.message && <p className="field-error">{errors.message.message}</p>}
+            {errors.message && <p id="message-error" className="field-error">{errors.message.message}</p>}
         </div>
 
         <button 

@@ -29,8 +29,8 @@
 }
 
 *:focus-visible {
-  outline: 2px solid var(--gold-shiny);
-  outline-offset: 2px;
+  outline: 3px solid #3b82f6;
+  outline-offset: 3px;
 }
 
 /* --- STANDARD BUTTON STYLES --- */
@@ -60,11 +60,11 @@
 }
 
 .btn-primary:hover {
-  transform: translateY(-5px);
+  transform: translateY(-5px) scale(1.03);
   box-shadow: 
     0 15px 35px rgba(1, 24, 123, 0.6),
-    0 0 20px var(--gold-glow);
-  border-color: var(--gold);
+    0 0 25px rgba(59, 130, 246, 0.5);
+  border-color: var(--gold-shiny);
 }
 
 .btn-secondary {
@@ -1204,6 +1204,25 @@ footer .col h2 {
   .contact-us {
     padding: 40px 15px;
   }
+
+  /* Mobile Touch Targets & Micro-UX */
+  button, 
+  .btn,
+  .navbar .nav-links a, 
+  .menu-icons, 
+  .icons a {
+    min-height: 48px;
+    min-width: 48px;
+  }
+
+  /* Mobile CTA Dominance */
+  .home .btn-primary {
+    width: 100%;
+    max-width: 320px;
+    margin: 10px auto 0;
+    font-size: 1.05rem;
+    padding: 16px 20px;
+  }
 }
 
 @media (max-width: 400px) {
@@ -1674,59 +1693,39 @@ footer .col h2 {
 }
 
 .field-error {
-  color: #ff6b6b !important;
-  font-size: 12px;
-  margin-top: 4px;
+  color: #ef4444 !important;
+  font-size: 13px;
+  margin-top: 6px;
   margin-bottom: 2px;
   display: flex;
   align-items: center;
-  gap: 4px;
+  gap: 6px;
   animation: shakeIn 0.35s ease;
-  font-weight: 500;
+  font-weight: 600;
 }
 
-.field-error.apply-error {
-  color: #dc2626 !important;
+.field-error::before {
+  content: '⚠';
+  font-size: 14px;
 }
 
 @keyframes shakeIn {
-  0% {
-    transform: translateX(-8px);
-    opacity: 0;
-  }
-
-  25% {
-    transform: translateX(6px);
-  }
-
-  50% {
-    transform: translateX(-4px);
-  }
-
-  75% {
-    transform: translateX(2px);
-  }
-
-  100% {
-    transform: translateX(0);
-    opacity: 1;
-  }
+  0% { transform: translateX(-8px); opacity: 0; }
+  25% { transform: translateX(6px); }
+  50% { transform: translateX(-4px); }
+  75% { transform: translateX(2px); }
+  100% { transform: translateX(0); opacity: 1; }
 }
 
-#contact-form .has-error input,
-#contact-form .has-error textarea {
-  border-bottom-color: #ff6b6b !important;
+.has-error input,
+.has-error textarea,
+.has-error select {
+  border: 2px solid #ef4444 !important;
+  background-color: rgba(239, 68, 68, 0.05) !important;
 }
 
-
-.apply .has-error input,
-.apply .has-error textarea,
-.apply .has-error select {
-  border-color: #ef4444 !important;
-}
-
-.apply .has-error label {
-  color: #ef4444;
+.has-error label {
+  color: #ef4444 !important;
 }
 
 /* Success message */

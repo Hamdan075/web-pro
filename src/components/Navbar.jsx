@@ -9,7 +9,7 @@ import "./Navbar.css";
 const Navbar = () => {
     const [toggle, setToggle] = useState(false);
     const { navLinks } = useContext(SiteContext);
-    const { isAdmin, logout } = useContext(AuthContext);
+    const { isAdmin, isUser, logout } = useContext(AuthContext);
     const navigate = useNavigate();
 
     const handleLogout = () => {
@@ -28,10 +28,14 @@ const Navbar = () => {
     {navLinks.map(nav => (
       <NavLink to={nav.link} key={nav._id || nav.id} className="link">{nav.id}</NavLink>
     ))}
-    {isAdmin ? (
+    {isAdmin || isUser ? (
       <button onClick={handleLogout} className="link" style={{ background: 'transparent', border: 'none', color: 'inherit', font: 'inherit', cursor: 'pointer', padding: 0 }}>Logout</button>
     ) : (
-      <NavLink to="/admin-login" className="link">Admin</NavLink>
+      <>
+        <NavLink to="/login" className="link">Login</NavLink>
+        <NavLink to="/register" className="link">Register</NavLink>
+        <NavLink to="/admin-login" className="link">Admin</NavLink>
+      </>
     )}
   </div>
   
@@ -43,10 +47,14 @@ const Navbar = () => {
     {navLinks.map(nav => (
       <NavLink to={nav.link} key={nav._id || nav.id} onClick={() => setToggle(false)}>{nav.id}</NavLink>
     ))}
-    {isAdmin ? (
+    {isAdmin || isUser ? (
       <button onClick={() => { handleLogout(); setToggle(false); }} style={{ background: 'transparent', border: 'none', color: 'inherit', font: 'inherit', cursor: 'pointer', padding: 0, display: 'block', margin: '1rem 0' }}>Logout</button>
     ) : (
-      <NavLink to="/admin-login" onClick={() => setToggle(false)}>Admin</NavLink>
+      <>
+        <NavLink to="/login" onClick={() => setToggle(false)}>Login</NavLink>
+        <NavLink to="/register" onClick={() => setToggle(false)}>Register</NavLink>
+        <NavLink to="/admin-login" onClick={() => setToggle(false)}>Admin</NavLink>
+      </>
     )}
   </div>
 </nav>

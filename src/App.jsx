@@ -17,6 +17,8 @@ const StudentProfile = lazy(() => import("./routes/StudentProfile"));
 const AddStudent = lazy(() => import("./routes/AddStudent"));
 const EditStudent = lazy(() => import("./routes/EditStudent"));
 const AdminLogin = lazy(() => import("./routes/AdminLogin"));
+const UserLogin = lazy(() => import("./routes/UserLogin"));
+const UserRegister = lazy(() => import("./routes/UserRegister"));
 
 import RootLayout from "./layouts/RootLayout";
 
@@ -36,6 +38,8 @@ const router = createBrowserRouter(
       <Route path="add-student" element={<AddStudent />} />
       <Route path="edit-student/:id" element={<EditStudent />} />
       <Route path="admin-login" element={<AdminLogin />} />
+      <Route path="login" element={<UserLogin />} />
+      <Route path="register" element={<UserRegister />} />
       <Route path="*" element={<Error />} />
     </Route>
   )

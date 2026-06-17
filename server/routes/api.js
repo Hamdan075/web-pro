@@ -16,6 +16,7 @@ const Student = require('../models/Student');
 const Program = require('../models/Program');
 const Admin = require('../models/Admin');
 const NewsletterSubscriber = require('../models/NewsletterSubscriber');
+const User = require('../models/User');
 
 const verifyToken = require('../middleware/auth');
 const { loginLimiter, formLimiter } = require('../middleware/rateLimiter');
@@ -387,6 +388,79 @@ router.post('/auth/login', loginLimiter, async (req, res) => {
     );
 
     res.json({ token, email: admin.email });
+  } catch (err) {
+    res.status(500).json({ error: err.message });
+  }
+});
+
+// POST /api/auth/register — User Registration
+router.post('/auth/register', formLimiter, async (req, res) => {
+  try {
+    const { name, email, password } = req.body;
+    if (!name || !email || !password) {
+      return res.status(400).json({ error: 'Name, email, and password are required' });
+    }
+
+    // Check if user already exists
+    const existingUser = await User.findOne({ email: email.toLowerCase() });
+    if (existingUser) {
+      return res.status(400).json({ error: 'Email already registered' });
+    }
+
+    // Hash password
+    const salt = await bcrypt.genSalt(10);
+    const hashedPassword = await bcrypt.hash(password, salt);
+
+    // Create user
+    const newUser = new User({
+      name,
+      email: email.toLowerCase(),
+      password: hashedPassword
+    });
+
+    const savedUser = await newUser.save();
+
+    // Sign Token
+    const token = jwt.sign(
+      { id: savedUser._id, email: savedUser.email },
+      process.env.JWT_SECRET,
+      { expiresIn: '24h' }
+    );
+
+    res.status(201).json({ token, user: { id: savedUser._id, name: savedUser.name, email: savedUser.email } });
+  } catch (err) {
+    res.status(500).json({ error: err.message });
+  }
+});
+
+// POST /api/auth/user-login — User Login
+router.post('/auth/user-login', loginLimiter, async (req, res) => {
+  try {
+    const { email, password } = req.body;
+    if (!email || !password) {
+      return res.status(400).json({ error: 'Email and password are required' });
+    }
+
+    // Find User
+    const user = await User.findOne({ email: email.toLowerCase() });
+    if (!user) {
+      return res.status(401).json({ error: 'Invalid email or password' });
+    }
+
+    // Check Password
+    const isMatch = await bcrypt.compare(password, user.password);
+    if (!isMatch) {
+      return res.status(401).json({ error: 'Invalid email or password' });
+    }
+
+    // Sign Token
+    const token = jwt.sign(
+      { id: user._id, email: user.email },
+      process.env.JWT_SECRET,
+      { expiresIn: '24h' }
+    );
+
+    res.json({ token, user: { id: user._id, name: user.name, email: user.email } });
   } catch (err) {
     res.status(500).json({ error: err.message });
   }
